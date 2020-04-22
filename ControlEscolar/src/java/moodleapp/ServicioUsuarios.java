@@ -27,7 +27,7 @@ public class ServicioUsuarios {
         return s;
     }
     
-    public Respuesta<ArrayList<Alumno>> getUsuarios() {
+    public Respuesta getUsuarios() {
         JDBConexion conn = JDBConexion.Instance();
         
         return new Respuesta(conn.obtenerListaAlumnos(), "");

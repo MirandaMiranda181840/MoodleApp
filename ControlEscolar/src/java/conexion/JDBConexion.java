@@ -35,6 +35,7 @@ public class JDBConexion {
     public static JDBConexion Instance() {
         if (conexionJDBC== null) {
             conexionJDBC= new JDBConexion();
+            conexionJDBC.conexion();
         }
         
         return conexionJDBC;
@@ -42,12 +43,16 @@ public class JDBConexion {
 
     public void conexion(){
        try{
+            String usuario = "moodle-owner"; //"root"
+            String contra = "moodle123$%"; // ""
             Class.forName("com.mysql.jdbc.Driver");
-            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moodle?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moodle?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", usuario, contra);
             st = cn.createStatement();
-            JOptionPane.showMessageDialog(null, "Connected", "Moodle", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Connected", "Moodle", JOptionPane.INFORMATION_MESSAGE);
+            System.out.println("Connected.");
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Not connected", "Moodle", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Not connected", "Moodle", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Not connected." + e.getMessage());
         }  
     }
     public ArrayList<Alumno> obtenerListaAlumnos(){

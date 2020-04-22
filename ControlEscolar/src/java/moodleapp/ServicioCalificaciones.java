@@ -27,13 +27,13 @@ public class ServicioCalificaciones {
         return s;
     }
     
-    public Respuesta<ArrayList<Calificacion>> getCalificaciones() {
+    public Respuesta getCalificaciones() {
         JDBConexion conn = JDBConexion.Instance();
         
         return new Respuesta(conn.obtenerListaCalificaciones(), "");
     }
     
-    public Respuesta<ArrayList<Calificacion>> getCalificaciones(int alumnoId) {
+    public Respuesta getCalificaciones(int alumnoId) {
         JDBConexion conn = JDBConexion.Instance();
         
         ArrayList<Calificacion> califsAlumno = new ArrayList<>();
