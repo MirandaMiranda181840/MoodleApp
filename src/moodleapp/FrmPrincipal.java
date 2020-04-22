@@ -5,6 +5,8 @@
  */
 package moodleapp;
 
+import conexion.JDBConexion;
+
 /**
  *
  * @author Miranda, 
@@ -17,12 +19,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form FrmPrincipal
      */
+    JDBConexion conexion;
     public FrmPrincipal() {
         initComponents();
-        //Se centra la ventana a el medio de la pantalla
          setLocationRelativeTo(null);
+         conexion= JDBConexion.Instance();
+         //aqui se realiza la conexion a la bd
+         conexion.conexion();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

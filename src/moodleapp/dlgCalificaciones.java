@@ -5,15 +5,16 @@
  */
 package moodleapp;
 
-import java.sql.Connection;
+import conexion.JDBConexion;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import moodleapp.objetosNegocio.Calificacion;
 
 /**
  * Clase que muestra los datos de las calificaciones de los alumnos.
@@ -25,10 +26,8 @@ import javax.swing.table.DefaultTableModel;
 public class dlgCalificaciones extends javax.swing.JDialog {
 
     //Variable que crea la conexión con la BD.
-    public Connection cn;
-    //Variable que se comunica con la BD.
-    public Statement st;
-    
+     JDBConexion conexion;
+   ArrayList <Calificacion> calificaciones;
     /**
      * Creates new form dlgCalificaciones.
      */
@@ -38,24 +37,12 @@ public class dlgCalificaciones extends javax.swing.JDialog {
         //Se centra la ventana a el medio de la pantalla
         setLocationRelativeTo(null);
         //Llama al método para conectarse a la BD.
-        conexion();
+           conexion=JDBConexion.Instance();
+        calificaciones= new ArrayList <Calificacion>();
         //Llama al método que muestra los datos en la tabla.
         mostrartabla();
     }
     
-    /**
-     * Método que realiza la conexión de la aplicación con la Base de datos.
-     */
-    public void conexion(){
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moodle?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
-            st = cn.createStatement();
-            JOptionPane.showMessageDialog(null, "Connected", "Moodle", JOptionPane.INFORMATION_MESSAGE);
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Not connected", "Moodle", JOptionPane.ERROR_MESSAGE);
-        }
-    }
     
     /**
      * Método que obtiene los datos de la base de datos y los muestra en la tabla.
@@ -70,35 +57,31 @@ public class dlgCalificaciones extends javax.swing.JDialog {
         modelo.addColumn("Feedback");
         //A la tabla de la interfaz se le da el valor de la creada anteriormente.
         tablaDatos.setModel(modelo);
-        
         try {
-            //String que se ejecutará para obtener los datos necesarios.
-            String sql = "SELECT * FROM mdl_grade_grades";
-            //Arreglo donde se guardarán los datos.
+            //obtiene las calificaciones de la bdd
+             calificaciones=conexion.obtenerListaCalificaciones();
+           Calificacion calificacion;
             String datos[] = new String[4];
-            //Variable que obtiene y guarda el resultado donde se ejecuta el query agregado anteriormente.
-            ResultSet rs  = st.executeQuery(sql);
-            
-            //Ciclo que recorre los valores obtenidos de la base de datos para guardarlos en el arreglo.
-            while(rs.next()){
-                datos[0]=rs.getString(1);
-                datos[1]=rs.getString(3);
-                datos[2]=rs.getString(9);
-                datos[3]=rs.getString(16);
+            //llena los campos de la tabla con los datos obtenidos
+            for (int i = 0; i < calificaciones.size(); i++) {
+                calificacion= calificaciones.get(i);
+                datos[0]=Integer.toString(calificacion.getId());
+                datos[1]=Integer.toString(calificacion.getIduser());
+                datos[2]=Float.toString(calificacion.getCalificacion());
+                datos[3]=calificacion.getComentario();
                 
-                //Se agrega la fila a la tabla. Si la calificación es null no se agrega.
                 if(datos[3] == null){
                 }else{
                     modelo.addRow(datos);
                 }
-                
             }
+        
             
-            //A la tabla de la interfaz se le da el valor de la creada anteriormente.
             tablaDatos.setModel(modelo);
             
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+             JOptionPane.showMessageDialog(null, "No hay datos en esta tabla", "No hay datos", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(dlgCalificaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

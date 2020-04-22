@@ -3,11 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/miran/OneDrive/Escritorio/MoodleApp/src/moodleapp/dlgAsignaciones.java</file>
-            <file>file:/C:/Users/miran/OneDrive/Escritorio/MoodleApp/src/moodleapp/dlgAlumnos.java</file>
-            <file>file:/C:/Users/miran/OneDrive/Escritorio/MoodleApp/src/moodleapp/dlgCalificaciones.java</file>
-            <file>file:/C:/Users/miran/OneDrive/Escritorio/MoodleApp/src/moodleapp/FrmPrincipal.java</file>
-            <file>file:/C:/Users/miran/OneDrive/Escritorio/MoodleApp/src/moodleapp/dlgCursos.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/moodleapp/objetosNegocio/Alumno.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/moodleapp/dlgCalificaciones.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/conexion/JDBConexion.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/moodleapp/dlgAsignaciones.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/moodleapp/objetosNegocio/Asignacion.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/moodleapp/objetosNegocio/Calificacion.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/moodleapp/dlgCursos.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/moodleapp/objetosNegocio/Curso.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/moodleapp/FrmPrincipal.java</file>
+            <file>file:/C:/Users/crisb/Desktop/ITSON/6to%20Semestre/Distribuidos/PROYECTO%20FINAL/git/MoodleApp/src/moodleapp/dlgAlumnos.java</file>
         </group>
     </open-files>
 </project-private>

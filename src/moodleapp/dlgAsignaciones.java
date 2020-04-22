@@ -5,15 +5,16 @@
  */
 package moodleapp;
 
-import java.sql.Connection;
+import conexion.JDBConexion;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import moodleapp.objetosNegocio.Asignacion;
 
 /**
  * Clase que muestra los datos de las asignaciones.
@@ -26,9 +27,8 @@ import javax.swing.table.DefaultTableModel;
 public class dlgAsignaciones extends javax.swing.JDialog {
 
     //Variable que crea la conexión con la BD.
-    public Connection cn;
-    //Variable que se comunica con la BD.
-    public Statement st;
+       JDBConexion conexion;
+   ArrayList <Asignacion> asignaciones;
     
     /**
      * Creates new form dlgAsignaciones.
@@ -39,29 +39,17 @@ public class dlgAsignaciones extends javax.swing.JDialog {
         //Se centra la ventana a el medio de la pantalla
         setLocationRelativeTo(null);
         //Llama al método para conectarse a la BD.
-        conexion();
+         conexion=JDBConexion.Instance();
+       asignaciones= new ArrayList <Asignacion>();
         //Llama al método que muestra los datos en la tabla.
         mostrartabla();
     }
-    
-    /**
-     * Método que realiza la conexión de la aplicación con la Base de datos.
-     */
-    public void conexion(){
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moodle?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
-            st = cn.createStatement();
-            JOptionPane.showMessageDialog(null, "Connected", "Moodle", JOptionPane.INFORMATION_MESSAGE);
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Not connected", "Moodle", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+
     
     /**
      * Método que obtiene los datos de la base de datos y los muestra en la tabla.
      */
-    void mostrartabla(){
+    void mostrartabla() {
         //Se crea la tabla.
         DefaultTableModel modelo = new DefaultTableModel();
         //Se añaden las columnas según el tipo de dato.
@@ -72,31 +60,29 @@ public class dlgAsignaciones extends javax.swing.JDialog {
         modelo.addColumn("No. Submissions");
         //A la tabla de la interfaz se le da el valor de la creada anteriormente.
         tablaDatos.setModel(modelo);
-        
-        try {
-            //String que se ejecutará para obtener los datos necesarios.
-            String sql = "SELECT * FROM mdl_assign";
-            //Arreglo donde se guardarán los datos.
+       
+        try { 
+          //obtiene la lista de asignaciones de la bdd
+            asignaciones = conexion.obtenerListaAsignacion();
+            Asignacion asignacion;
             String datos[] = new String[5];
-            //Variable que obtiene y guarda el resultado donde se ejecuta el query agregado anteriormente.
-            ResultSet rs  = st.executeQuery(sql);
-            
-            //Ciclo que recorre los valores obtenidos de la base de datos para guardarlos en el arreglo.
-            while(rs.next()){
-                datos[0]=rs.getString(1);
-                datos[1]=rs.getString(2);
-                datos[2]=rs.getString(3);
-                datos[3]=rs.getString(4);
-                datos[4]=rs.getString(7);
-                //Se agrega la fila a la tabla.
+            //llena los campos de la tabla con los datos obtenidos
+            for (int i = 0; i < asignaciones.size(); i++) {
+
+                asignacion = asignaciones.get(i);
+                datos[0] = Integer.toString(asignacion.getId());
+                datos[1] = Integer.toString(asignacion.getIdcurso());
+                datos[2] = asignacion.getNombre();
+                datos[3] = asignacion.getIntroduccion();
+                datos[4] = Integer.toString(asignacion.getNumSubidas());
                 modelo.addRow(datos);
             }
-            
-            //A la tabla de la interfaz se le da el valor de la creada anteriormente.
+
             tablaDatos.setModel(modelo);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "No hay datos en esta tabla", "No hay datos", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(dlgAsignaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

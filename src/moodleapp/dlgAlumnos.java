@@ -5,15 +5,18 @@
  */
 package moodleapp;
 
+import conexion.JDBConexion;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import moodleapp.objetosNegocio.Alumno;
 
 /**
  * Clase que muestra los datos de los alumnos.
@@ -26,9 +29,8 @@ import javax.swing.table.DefaultTableModel;
 public class dlgAlumnos extends javax.swing.JDialog {
 
     //Variable que crea la conexión con la BD.
-    public Connection cn;
-    //Variable que se comunica con la BD.
-    public Statement st;
+     JDBConexion conexion;
+    ArrayList <Alumno> alumnos;
     
     /**
      * Creates new form dlgAlumnos.
@@ -39,24 +41,13 @@ public class dlgAlumnos extends javax.swing.JDialog {
         //Se centra la ventana a el medio de la pantalla
         setLocationRelativeTo(null);
         //Llama al método para conectarse a la BD.
-        conexion();
+         conexion=JDBConexion.Instance();
+         alumnos= new ArrayList <Alumno>();
         //Llama al método que muestra los datos en la tabla.
         mostrartabla();
     }
-    
-    /**
-     * Método que realiza la conexión de la aplicación con la Base de datos.
-     */
-    public void conexion(){
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moodle?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
-            st = cn.createStatement();
-            JOptionPane.showMessageDialog(null, "Connected", "Moodle", JOptionPane.INFORMATION_MESSAGE);
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Not connected", "Moodle", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+
+
     
     /**
      * Método que obtiene los datos de la base de datos y los muestra en la tabla.
@@ -73,32 +64,28 @@ public class dlgAlumnos extends javax.swing.JDialog {
         //A la tabla de la interfaz se le da el valor de la creada anteriormente.
         tablaDatos.setModel(modelo);
         
-        try {
-            //String que se ejecutará para obtener los datos necesarios.
-            String sql = "SELECT * FROM mdl_user";
-            //Arreglo donde se guardarán los datos.
-            String datos[] = new String[5];
-            //Variable que obtiene y guarda el resultado donde se ejecuta el query agregado anteriormente.
-            ResultSet rs  = st.executeQuery(sql);
-
-            //Ciclo que recorre los valores obtenidos de la base de datos para guardarlos en el arreglo.
-            while(rs.next()){
-                datos[0]=rs.getString(1);
-                datos[1]=rs.getString(8);
-                datos[2]=rs.getString(11);
-                datos[3]=rs.getString(12);
-                datos[4]=rs.getString(13);
-                //Se agrega la fila a la tabla. Solo se agregan del 3 en adelante por que los primeros 3 son administradores.
+          try {
+            Alumno alumno;
+           String datos[] = new String[5];
+           //obtiene la lista de alumnos de la bdd
+            alumnos=conexion.obtenerListaAlumnos();
+            for (int i = 0; i < alumnos.size(); i++) {
+                //llena los campos de la tabla con los elementos obtenidos de la lista
+                alumno= alumnos.get(i);
+                datos[0]=Integer.toString(alumno.getId());
+                datos[1]=alumno.getUsername();
+                datos[2]=alumno.getNombre();
+                datos[3]=alumno.getApellido();
+                datos[4]=alumno.getEmail();
                 if(Integer.parseInt(datos[0]) > 3){
                     modelo.addRow(datos);
                 }
-            }
-            
-                //A la tabla de la interfaz se le da el valor de la creada anteriormente.
+            }   
                 tablaDatos.setModel(modelo);
             
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "No hay datos en esta tabla", "No hay datos", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(dlgAlumnos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
