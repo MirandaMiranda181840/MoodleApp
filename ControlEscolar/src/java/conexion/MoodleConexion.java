@@ -92,8 +92,8 @@ public class MoodleConexion {
               String sql = "SELECT * FROM mdl_grade_grades";
               ResultSet rs  = st.executeQuery(sql);
               while(rs.next()){
-                  calificaciones.add(new Calificacion(Integer.parseInt(rs.getString(1)), rs.getInt(2),Integer.parseInt(rs.getString(3)),
-                  Float.parseFloat(rs.getString(9)),rs.getString(16)));
+                  calificaciones.add(new Calificacion(rs.getInt(1), rs.getInt(2),rs.getInt(3),
+                  rs.getFloat(9),rs.getString(16)));
             }
             
           } catch (SQLException ex) {

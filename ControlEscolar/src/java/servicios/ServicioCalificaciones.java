@@ -29,14 +29,14 @@ public class ServicioCalificaciones {
     
     public Respuesta getCalificaciones() {
         MoodleConexion conn = MoodleConexion.Instance();
-        
+        System.out.println("todo");
         return new Respuesta(conn.obtenerListaCalificaciones(), "");
     }
     
     //busca calificaciones de un alumno
-    public Respuesta getCalificaciones(int alumnoId) {
+    public Respuesta getCalificacionesAlumnoId(int alumnoId) {
         MoodleConexion conn = MoodleConexion.Instance();
-        
+        System.out.println("alumnoId");
         ArrayList<Calificacion> califsAlumno = new ArrayList<>();
         String mensaje = "";
         

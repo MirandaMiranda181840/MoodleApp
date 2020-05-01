@@ -50,21 +50,21 @@ public class CalificacionesResource {
         
         return Response.ok((ArrayList<Calificacion>) califs.getRespuesta(), MediaType.APPLICATION_JSON).build();
     }
-        
+    /*
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response getCalificacionesAlumnoId(@QueryParam("alumnoId") int alumnoId) {
         ServicioCalificaciones serv = ServicioCalificaciones.Instance();
         
-        Respuesta califs = serv.getCalificaciones(alumnoId);
+        Respuesta califs = serv.getCalificacionesAlumnoId(alumnoId);
         if(califs.getMensaje().length() > 0) {
             //hacer algo
         }
         
         return Response.ok((ArrayList<Calificacion>) califs.getRespuesta(), MediaType.APPLICATION_JSON).build();
     }
-    
+    */
     /**
      * PUT method for updating or creating an instance of CalificacionesResource
      * @param content representation for the resource

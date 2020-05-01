@@ -53,8 +53,9 @@ public class dlgCalificaciones extends javax.swing.JDialog {
         calificaciones=new ArrayList<>();
         for (Calificacion re : res) {
             calificaciones.add(re);
+            System.out.println(re.toString());
         }
-        
+        System.out.println("ejecutado2");
         Calificacion calificacion;
         
         try {
