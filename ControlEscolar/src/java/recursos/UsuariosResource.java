@@ -15,7 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import moodleapp.ServicioUsuarios;
+import servicios.ServicioUsuarios;
 import objectosNegocio.Alumno;
 import objectosNegocio.Respuesta;
 

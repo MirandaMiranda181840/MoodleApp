@@ -18,23 +18,24 @@ import objectosNegocio.Alumno;
 import objectosNegocio.Asignacion;
 import objectosNegocio.Calificacion;
 import objectosNegocio.Curso;
+import objectosNegocio.Mensaje;
 
 /**
  *
  * @author crisb
  */
-public class JDBConexion {
+public class MoodleConexion {
  
     public Connection cn;
     public Statement st;
     
-    private static JDBConexion conexionJDBC;
+    private static MoodleConexion conexionJDBC;
     
-    private JDBConexion() {}
+    private MoodleConexion() {}
     
-    public static JDBConexion Instance() {
+    public static MoodleConexion Instance() {
         if (conexionJDBC== null) {
-            conexionJDBC= new JDBConexion();
+            conexionJDBC= new MoodleConexion();
             conexionJDBC.conexion();
         }
         
@@ -49,7 +50,7 @@ public class JDBConexion {
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moodle?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", usuario, contra);
             st = cn.createStatement();
             //JOptionPane.showMessageDialog(null, "Connected", "Moodle", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Connected.");
+            System.out.println("Connected MOODLE.");
         }catch(Exception e){
             //JOptionPane.showMessageDialog(null, "Not connected", "Moodle", JOptionPane.ERROR_MESSAGE);
             System.out.println("Not connected." + e.getMessage());
@@ -65,7 +66,7 @@ public class JDBConexion {
             }
             
           } catch (SQLException ex) {
-              Logger.getLogger(JDBConexion.class.getName()).log(Level.SEVERE, null, ex);
+              Logger.getLogger(MoodleConexion.class.getName()).log(Level.SEVERE, null, ex);
           }
           return alumnos;
     }
@@ -81,7 +82,7 @@ public class JDBConexion {
             }
             
           } catch (SQLException ex) {
-              Logger.getLogger(JDBConexion.class.getName()).log(Level.SEVERE, null, ex);
+              Logger.getLogger(MoodleConexion.class.getName()).log(Level.SEVERE, null, ex);
           }
           return asignaciones;
     }
@@ -91,12 +92,12 @@ public class JDBConexion {
               String sql = "SELECT * FROM mdl_grade_grades";
               ResultSet rs  = st.executeQuery(sql);
               while(rs.next()){
-                  calificaciones.add(new Calificacion(Integer.parseInt(rs.getString(1)),Integer.parseInt(rs.getString(3)),
+                  calificaciones.add(new Calificacion(Integer.parseInt(rs.getString(1)), rs.getInt(2),Integer.parseInt(rs.getString(3)),
                   Float.parseFloat(rs.getString(9)),rs.getString(16)));
             }
             
           } catch (SQLException ex) {
-              Logger.getLogger(JDBConexion.class.getName()).log(Level.SEVERE, null, ex);
+              Logger.getLogger(MoodleConexion.class.getName()).log(Level.SEVERE, null, ex);
           }
           return calificaciones;
     }
@@ -112,12 +113,11 @@ public class JDBConexion {
             }
             
           } catch (SQLException ex) {
-              Logger.getLogger(JDBConexion.class.getName()).log(Level.SEVERE, null, ex);
+              Logger.getLogger(MoodleConexion.class.getName()).log(Level.SEVERE, null, ex);
           }
           return cursos;
     }
     
-    
-    
+   
     
 }

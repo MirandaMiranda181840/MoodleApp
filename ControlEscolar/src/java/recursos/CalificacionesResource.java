@@ -16,7 +16,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import moodleapp.ServicioCalificaciones;
+import servicios.ServicioCalificaciones;
 import objectosNegocio.Calificacion;
 import objectosNegocio.Respuesta;
 
