@@ -32,7 +32,8 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+         //------------------------------------configurar con puerto propio-----------------------------------
+        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public CalificacionesResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -63,7 +64,8 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+        //------------------------------------configurar con puerto propio-----------------------------------
+        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public UsuariosResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -88,7 +90,8 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+         //------------------------------------configurar con puerto propio-----------------------------------
+        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public MensajeriaResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -110,7 +113,8 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+         //------------------------------------configurar con puerto propio-----------------------------------
+        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public AlarmaResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -134,7 +138,8 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+         //------------------------------------configurar con puerto propio-----------------------------------
+        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public CalificacionesProfesoresResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -154,9 +159,4 @@ public class RESTConexion {
         }
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4d164fc1736ab9c0a42e3343c242802d4039e238
-    
 }

@@ -47,7 +47,17 @@ public class RESTConexion {
             WebTarget resource = webTarget;
             return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
-
+      
+         public <T> T getCursosAlumno(Class<T> responseType, int alumnoId) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            resource = resource.queryParam("alumnoId", alumnoId);
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
+          public <T> T getAsignacionesCurso(Class<T> responseType, int cursoId) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            resource = resource.queryParam("cursoId", cursoId);
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
         public <T> T getCalificacionesAlumnoId(Class<T> responseType, int alumnoId) throws ClientErrorException {
             WebTarget resource = webTarget;
             resource = resource.queryParam("alumnoId", alumnoId);

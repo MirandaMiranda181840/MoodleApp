@@ -5,7 +5,7 @@
  */
 package interfaces;
 
-import javax.swing.ImageIcon;
+import objectosNegocio.ParentUser;
 
 /**
  *
@@ -18,9 +18,11 @@ public final class dlgBienvenida extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public dlgBienvenida(java.awt.Frame parent, boolean modal) {
+    ParentUser parentUser;
+    public dlgBienvenida(java.awt.Frame parent, boolean modal, ParentUser parentUser) {
         super(parent, modal);
         initComponents();
+        this.parentUser=parentUser;
         setLocationRelativeTo(null);
         //Aquí se van a poner los nombres
         setNombres();
@@ -28,8 +30,8 @@ public final class dlgBienvenida extends javax.swing.JDialog {
     
     public void setNombres(){
         //El papa
-        lblNombrePadre.setText("Nombre1");
-        lblApellidoPadre.setText("Apellido1");
+        lblNombrePadre.setText(parentUser.getFirstName());
+        lblApellidoPadre.setText(parentUser.getLastName());
         //El alumno
         lblNombreHijo.setText("Nombre2");
         lblApellidoHijo.setText("Apellido2");
@@ -176,7 +178,7 @@ public final class dlgBienvenida extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnComenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComenzarActionPerformed
-        FrmPrincipal principal = new FrmPrincipal();
+        FrmPrincipal principal = new FrmPrincipal(parentUser);
         principal.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnComenzarActionPerformed

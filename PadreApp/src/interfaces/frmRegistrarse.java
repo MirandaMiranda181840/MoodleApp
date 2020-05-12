@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import objectosNegocio.ParentUser;
 
 /**
  *
@@ -19,6 +20,7 @@ public class frmRegistrarse extends javax.swing.JFrame {
     /**
      * Creates new form frmRegistrarse
      */
+    ParentUser parentUser;
     public frmRegistrarse() {
         initComponents();
         setLocationRelativeTo(null);
@@ -279,10 +281,12 @@ public class frmRegistrarse extends javax.swing.JFrame {
                         txtApellido.getText().matches("^[a-zA-Z ]*$")) {
                     
                         //AQUÍ VA EL CÓDIGO PARA REGISTRARLO
-
+                         parentUser=ParentUser.Instance(txtNombre.getText(), txtApellido.getText(), 
+                                 txtEmail.getText(), txtContrasena.getText(), 
+                                 "", "", 5);
 
                       //Esto pasa si el registro va bien
-                      dlgBienvenida bien = new dlgBienvenida(this, true);
+                      dlgBienvenida bien = new dlgBienvenida(this, true,parentUser);
                       bien.setVisible(true);
                       this.setVisible(false);  
                       
@@ -299,40 +303,7 @@ public class frmRegistrarse extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmRegistrarse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmRegistrarse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmRegistrarse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmRegistrarse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmRegistrarse().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrarse;

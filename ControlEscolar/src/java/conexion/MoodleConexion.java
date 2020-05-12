@@ -44,8 +44,9 @@ public class MoodleConexion {
 
     public void conexion(){
        try{
-            String usuario = "moodle-owner"; //"root"
-            String contra = "moodle123$%"; // ""
+            //------------------------------------configurar con puerto propio-----------------------------------
+            String usuario = "moodleuser"; //"root"
+            String contra = "yourpassword"; // ""
             Class.forName("com.mysql.jdbc.Driver");
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moodle?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", usuario, contra);
             st = cn.createStatement();
@@ -71,10 +72,10 @@ public class MoodleConexion {
           return alumnos;
     }
     
-    public ArrayList<Asignacion> obtenerListaAsignacion(){
+    public ArrayList<Asignacion> obtenerListaAsignacionesCurso(int idCurso){
            ArrayList <Asignacion> asignaciones= new ArrayList <Asignacion>();
         try {
-              String sql = "SELECT * FROM mdl_assign";
+              String sql = "select * from mdl_assign inner join mdl_course on mdl_assign.course=mdl_course.id where mdl_course.id="+idCurso+"";
               ResultSet rs  = st.executeQuery(sql);
               while(rs.next()){
                   asignaciones.add(new Asignacion(Integer.parseInt(rs.getString(1)),Integer.parseInt(rs.getString(2)),rs.getString(3),rs.getString(4)
@@ -102,10 +103,14 @@ public class MoodleConexion {
           return calificaciones;
     }
     
-        public ArrayList <Curso> obtenerListaCursos(){
+    
+    /*
+    Obtiene la lista de cursos en los que esta inscrito un alumno dado su id
+    */
+        public ArrayList <Curso> obtenerListaCursosAlumno(int idAlumno){
            ArrayList <Curso> cursos= new ArrayList <Curso>();
         try {
-              String sql = "SELECT * FROM mdl_course";
+              String sql = "select * from mdl_course inner join mdl_context on mdl_course.id=mdl_context.instanceid inner join mdl_role_assignments on mdl_context.id=mdl_role_assignments.contextid where mdl_role_assignments.userid="+idAlumno+ " group by mdl_course.fullname";
               ResultSet rs  = st.executeQuery(sql);
               while(rs.next()){
                   cursos.add(new Curso(Integer.parseInt(rs.getString(1)),rs.getString(4),

@@ -5,7 +5,7 @@
  */
 package interfaces;
 
-import javax.swing.ImageIcon;
+import objectosNegocio.ParentUser;
 
 /**
  *
@@ -16,8 +16,10 @@ public class FrmNotificaciones extends javax.swing.JFrame {
     /**
      * Creates new form frmCalificaciones
      */
-    public FrmNotificaciones() {
+    ParentUser parentUser;
+    public FrmNotificaciones(ParentUser parentUser) {
         initComponents();
+        this.parentUser=parentUser;
         setLocationRelativeTo(null);
     }
     
@@ -396,7 +398,7 @@ public class FrmNotificaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCursosActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        FrmPrincipal login = new FrmPrincipal();
+        FrmPrincipal login = new FrmPrincipal(parentUser);
         login.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
