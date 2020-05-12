@@ -5,6 +5,14 @@
  */
 package frm;
 
+import conexion.RESTConexion;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import objectosNegocio.Alarma;
+import objectosNegocio.Alumno;
+import objectosNegocio.Calificacion;
+import objectosNegocio.Mensaje;
+
 
 /**
  *
@@ -12,12 +20,18 @@ package frm;
  */
 public class FrmPrincipal extends javax.swing.JFrame {
 
+    RESTConexion.MensajeriaResource_Client conexionMensajeria;
+    RESTConexion.AlarmaResource_Client conexionAlarmas;
+    RESTConexion.CalificacionesProfesoresResource_Client conexionCalProf;
     /**
      * Creates new form FrmPrincipal
      */
     public FrmPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
+        conexionMensajeria=new RESTConexion.MensajeriaResource_Client();
+        conexionAlarmas=new RESTConexion.AlarmaResource_Client();
+        conexionCalProf=new RESTConexion.CalificacionesProfesoresResource_Client();
     }
 
     /**
@@ -36,6 +50,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
         btnCalificaciones = new javax.swing.JButton();
         btnAlumnos = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -45,7 +62,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         btnAsignaciones.setBackground(new java.awt.Color(255, 204, 255));
         btnAsignaciones.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
-        btnAsignaciones.setForeground(new java.awt.Color(0, 0, 0));
         btnAsignaciones.setText("Asignaciones");
         btnAsignaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -55,7 +71,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         btnCursos.setBackground(new java.awt.Color(204, 255, 204));
         btnCursos.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
-        btnCursos.setForeground(new java.awt.Color(0, 0, 0));
         btnCursos.setText("Cursos");
         btnCursos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,7 +80,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         btnCalificaciones.setBackground(new java.awt.Color(204, 204, 255));
         btnCalificaciones.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
-        btnCalificaciones.setForeground(new java.awt.Color(0, 0, 0));
         btnCalificaciones.setText("Calificaciones");
         btnCalificaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,7 +89,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         btnAlumnos.setBackground(new java.awt.Color(255, 255, 204));
         btnAlumnos.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
-        btnAlumnos.setForeground(new java.awt.Color(0, 0, 0));
         btnAlumnos.setText("Alumnos");
         btnAlumnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,58 +97,97 @@ public class FrmPrincipal extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
-        jLabel1.setText("Moodle Data");
+        jLabel1.setText("Profesor App");
+
+        jToggleButton1.setText("Prueba mensajeria");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Prueba alarmas");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Prueba cal. prof.");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(15, 15, 15)
-                            .addComponent(btnAlumnos))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(btnAsignaciones)))
-                    .addComponent(btnCalificaciones))
-                .addContainerGap(71, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCursos)
-                .addGap(93, 93, 93))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(15, 15, 15)
+                                    .addComponent(btnAlumnos))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(btnAsignaciones)))
+                            .addComponent(btnCalificaciones))
+                        .addGap(56, 56, 56)
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addComponent(btnCursos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jToggleButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(btnAsignaciones)
-                .addGap(31, 31, 31)
-                .addComponent(btnCursos)
-                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAsignaciones)
+                        .addGap(31, 31, 31))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCursos)
+                    .addComponent(jToggleButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addGap(8, 8, 8)
                 .addComponent(btnCalificaciones)
                 .addGap(31, 31, 31)
                 .addComponent(btnAlumnos)
-                .addGap(32, 32, 32))
+                .addGap(40, 40, 40))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAsignacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignacionesActionPerformed
-        dlgAsignaciones asig = new dlgAsignaciones(this, true);
+        /*dlgAsignaciones asig = new dlgAsignaciones(this, true);
         asig.setVisible(true);
-        this.setVisible(false);
+        this.setVisible(false);*/
     }//GEN-LAST:event_btnAsignacionesActionPerformed
 
     private void btnCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCursosActionPerformed
-        dlgCursos cursos = new dlgCursos(this, true);
+        /*dlgCursos cursos = new dlgCursos(this, true);
         cursos.setVisible(true);
-        this.setVisible(false);
+        this.setVisible(false);*/
     }//GEN-LAST:event_btnCursosActionPerformed
 
     private void btnCalificacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalificacionesActionPerformed
@@ -149,6 +201,38 @@ public class FrmPrincipal extends javax.swing.JFrame {
         alumnos.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnAlumnosActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        Mensaje[] res = conexionMensajeria.getMensajesRelevantes(Mensaje[].class, "1");
+        for (Mensaje re : res) {
+            System.out.println("Mensaje encontrado del usuario con ID 1: " + re.toString());
+            JOptionPane.showMessageDialog(null, re.toString(), "Mensaje encontrado del usuario con ID 1", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Alarma[] res = conexionAlarmas.getAlarmasAlumnoId(Alarma[].class, "1");
+        boolean encontrado = false;
+        for (Alarma re : res) {
+            JOptionPane.showMessageDialog(null, re.toString(), "Alarma encontrada", JOptionPane.INFORMATION_MESSAGE);
+            encontrado = true;
+        }
+        if(!encontrado)
+            JOptionPane.showMessageDialog(null, "No se encontraron alarmas para el alumno 1", "Notificacion", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    
+        Calificacion[] res = conexionCalProf.buscarCalificacionDeAsignacion(Calificacion[].class, "1");
+        boolean encontrado = false;
+        for (Calificacion c : res) {
+            JOptionPane.showMessageDialog(null, c.toString(), "Calificacion encontrada", JOptionPane.INFORMATION_MESSAGE);
+            encontrado = true;
+        }
+        if(!encontrado)
+            JOptionPane.showMessageDialog(null, "No se encontraron calificaciones para la asignacion 1", "Notificacion", JOptionPane.INFORMATION_MESSAGE);
+    
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,8 +274,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnAsignaciones;
     private javax.swing.JButton btnCalificaciones;
     private javax.swing.JButton btnCursos;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }

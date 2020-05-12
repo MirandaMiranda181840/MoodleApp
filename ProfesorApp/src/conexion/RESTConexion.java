@@ -32,7 +32,7 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ControlEscolar2/webresources";
+        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
 
         public CalificacionesResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -65,7 +65,7 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ControlEscolar2/webresources";
+        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
 
         public UsuariosResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -78,6 +78,76 @@ public class RESTConexion {
 
         public <T> T getUsuarios(Class<T> responseType) throws ClientErrorException {
             WebTarget resource = webTarget;
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
+
+        public void close() {
+            client.close();
+        }
+    }
+
+    public static class MensajeriaResource_Client {
+
+        private WebTarget webTarget;
+        private Client client;
+        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+
+        public MensajeriaResource_Client() {
+            client = javax.ws.rs.client.ClientBuilder.newClient();
+            webTarget = client.target(BASE_URI).path("mensajeria");
+        }
+
+        public <T> T getMensajesRelevantes(Class<T> responseType, String userId) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            resource = resource.queryParam("userId", userId);
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
+
+        public void close() {
+            client.close();
+        }
+    }
+
+    public static class AlarmaResource_Client {
+
+        private WebTarget webTarget;
+        private Client client;
+        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+
+        public AlarmaResource_Client() {
+            client = javax.ws.rs.client.ClientBuilder.newClient();
+            webTarget = client.target(BASE_URI).path("alarma");
+        }
+
+        public <T> T getAlarmasAlumnoId(Class<T> responseType, String alumnoId) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (alumnoId != null) {
+                resource = resource.queryParam("alumnoId", alumnoId);
+            }
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
+
+        public void close() {
+            client.close();
+        }
+    }
+
+    public static class CalificacionesProfesoresResource_Client {
+
+        private WebTarget webTarget;
+        private Client client;
+        private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+
+        public CalificacionesProfesoresResource_Client() {
+            client = javax.ws.rs.client.ClientBuilder.newClient();
+            webTarget = client.target(BASE_URI).path("calificacionesProfesores");
+        }
+
+        public <T> T buscarCalificacionDeAsignacion(Class<T> responseType, String asignacionId) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (asignacionId != null) {
+                resource = resource.queryParam("asignacionId", asignacionId);
+            }
             return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
 

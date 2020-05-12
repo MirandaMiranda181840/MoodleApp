@@ -10,15 +10,19 @@ package objectosNegocio;
  * @author crisb
  */
 public class Calificacion {
-    private int id, iduser;
+    private int id;
+    private int iduser;
     private float calificacion;
+    private int assignment;
     private String comentario;
     
    public Calificacion(){
        
    }
-   public Calificacion(int id, int iduser, float calificacion , String comentario){
+   
+   public Calificacion(int id, int assignment, int iduser, float calificacion, String comentario){
        this.id=id;
+       this.assignment=assignment;
        this.iduser=iduser;
        this.calificacion=calificacion;
        this.comentario=comentario;
@@ -55,6 +59,18 @@ public class Calificacion {
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
-   
+
+    public int getAssignment() {
+        return assignment;
+    }
+
+    public void setAssignment(int assignment) {
+        this.assignment = assignment;
+    }
+
+    @Override
+    public String toString() {
+        return "Calificacion{" + "id=" + id + ", iduser=" + iduser + ", calificacion=" + calificacion + ", assignment=" + assignment + ", comentario=" + comentario + '}';
+    }
    
 }
