@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package moodleapp;
+package servicios;
 
-import conexion.JDBConexion;
+import conexion.MoodleConexion;
 import java.util.ArrayList;
 import objectosNegocio.Calificacion;
 import objectosNegocio.Respuesta;
@@ -28,14 +28,15 @@ public class ServicioCalificaciones {
     }
     
     public Respuesta getCalificaciones() {
-        JDBConexion conn = JDBConexion.Instance();
-        
+        MoodleConexion conn = MoodleConexion.Instance();
+        System.out.println("todo");
         return new Respuesta(conn.obtenerListaCalificaciones(), "");
     }
     
-    public Respuesta getCalificaciones(int alumnoId) {
-        JDBConexion conn = JDBConexion.Instance();
-        
+    //busca calificaciones de un alumno
+    public Respuesta getCalificacionesAlumnoId(int alumnoId) {
+        MoodleConexion conn = MoodleConexion.Instance();
+        System.out.println("alumnoId");
         ArrayList<Calificacion> califsAlumno = new ArrayList<>();
         String mensaje = "";
         
@@ -43,8 +44,6 @@ public class ServicioCalificaciones {
         for (Calificacion calif : califs) {
             if(calif.getIduser() == alumnoId) {
                 califsAlumno.add(calif);
-                if (calif.getCalificacion() < 7)
-                    mensaje = "Esto es una alarma, el estudiante con el id " + calif.getIduser() +", tiene bajas calificaciones.";
             }
         }
         

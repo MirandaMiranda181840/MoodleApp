@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package moodleapp;
+package servicios;
 
-import conexion.JDBConexion;
-import java.util.ArrayList;
-import objectosNegocio.Alumno;
+import conexion.MoodleConexion;
 import objectosNegocio.Respuesta;
 
 /**
@@ -28,7 +26,7 @@ public class ServicioUsuarios {
     }
     
     public Respuesta getUsuarios() {
-        JDBConexion conn = JDBConexion.Instance();
+        MoodleConexion conn = MoodleConexion.Instance();
         
         return new Respuesta(conn.obtenerListaAlumnos(), "");
     }
