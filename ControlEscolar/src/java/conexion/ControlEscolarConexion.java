@@ -44,6 +44,7 @@ public class ControlEscolarConexion {
 
     public void conexion(){
        try{
+           // //------------------------------------configurar con credenciales propias-----------------------------------
             String usuario = "root"; //"root"
             String contra = ""; // ""
             Class.forName("com.mysql.jdbc.Driver");

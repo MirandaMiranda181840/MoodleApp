@@ -63,6 +63,11 @@ public class Asignacion {
     public void setIntroduccion(String introduccion) {
         this.introduccion = introduccion;
     }
+
+    @Override
+    public String toString() {
+        return "Asignacion{" + "id=" + id + ", idcurso=" + idcurso + ", numSubidas=" + numSubidas + ", nombre=" + nombre + ", introduccion=" + introduccion + '}';
+    }
    
    
     

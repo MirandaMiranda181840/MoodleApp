@@ -49,4 +49,14 @@ public class ServicioCalificaciones {
         
         return new Respuesta(califsAlumno, mensaje);
     }
+    
+    public Respuesta getCursosAlumno(int alumnoId){
+        MoodleConexion conn= MoodleConexion.Instance();
+        return new Respuesta(conn.obtenerListaCursosAlumno(alumnoId),"");
+    }
+    
+    public Respuesta getAsignacionesCurso(int cursoID){
+           MoodleConexion conn= MoodleConexion.Instance();
+        return new Respuesta(conn.obtenerListaAsignacionesCurso(cursoID),"");
+    }
 }
