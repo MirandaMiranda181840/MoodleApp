@@ -28,11 +28,12 @@ public class RESTConexion {
     */
     
     
+    private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+        
     public static class CalificacionesResource_Client {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public CalificacionesResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -73,7 +74,6 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public UsuariosResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -98,7 +98,6 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public MensajeriaResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -120,7 +119,6 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public AlarmaResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -144,7 +142,6 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
 
         public CalificacionesProfesoresResource_Client() {
             client = javax.ws.rs.client.ClientBuilder.newClient();

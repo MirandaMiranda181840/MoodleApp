@@ -283,7 +283,7 @@ public class frmRegistrarse extends javax.swing.JFrame {
                         //AQUÍ VA EL CÓDIGO PARA REGISTRARLO
                          parentUser=ParentUser.Instance(txtNombre.getText(), txtApellido.getText(), 
                                  txtEmail.getText(), txtContrasena.getText(), 
-                                 "", "", 5);
+                                 "", "", 1); //5);
 
                       //Esto pasa si el registro va bien
                       dlgBienvenida bien = new dlgBienvenida(this, true,parentUser);

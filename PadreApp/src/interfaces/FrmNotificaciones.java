@@ -5,6 +5,9 @@
  */
 package interfaces;
 
+import conexion.RESTConexion;
+import javax.swing.JOptionPane;
+import objectosNegocio.Alarma;
 import objectosNegocio.ParentUser;
 
 /**
@@ -16,14 +19,29 @@ public class FrmNotificaciones extends javax.swing.JFrame {
     /**
      * Creates new form frmCalificaciones
      */
+    RESTConexion.AlarmaResource_Client conexionAlarmas;
     ParentUser parentUser;
     public FrmNotificaciones(ParentUser parentUser) {
         initComponents();
         this.parentUser=parentUser;
         setLocationRelativeTo(null);
+        conexionAlarmas=new RESTConexion.AlarmaResource_Client();
+        cargarNotificaciones();
     }
     
-    
+    private void cargarNotificaciones(){
+        Alarma[] res = conexionAlarmas.getAlarmasAlumnoId(Alarma[].class, ""+this.parentUser.getChildID());
+        jButton3.setVisible(false);
+        jLabel9.setVisible(false);
+        jTextArea1.setText("No se encontraron alarmas para\n el usuario con ID "+this.parentUser.getChildID());
+        for (Alarma re : res) {
+            jButton3.setVisible(true);
+            jLabel9.setVisible(true);
+            String[] txt = re.getMensaje().split("/");
+            jTextArea1.setText(txt[0]);
+            jLabel9.setText(txt[1]);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,10 +75,9 @@ public class FrmNotificaciones extends javax.swing.JFrame {
         lblLogo3 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        lvlPromedio = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jButton4 = new javax.swing.JButton();
 
         jPanel2.setBackground(new java.awt.Color(249, 128, 18));
@@ -285,60 +302,46 @@ public class FrmNotificaciones extends javax.swing.JFrame {
         jButton3.setBorderPainted(false);
         jButton3.setContentAreaFilled(false);
 
-        jLabel7.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("¡Las calificaciones de ");
-
-        jLabel8.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("tu hijo han bajado!");
-
-        lvlPromedio.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
-        lvlPromedio.setForeground(new java.awt.Color(67, 58, 56));
-        lvlPromedio.setText("6.5");
-
         jLabel9.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(67, 58, 56));
-        jLabel9.setText("Promedio:");
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("alerta");
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(252, 189, 131));
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 20)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(3);
+        jTextArea1.setBorder(null);
+        jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jButton3)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGap(81, 81, 81)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lvlPromedio)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel10Layout.createSequentialGroup()
+                            .addGap(139, 139, 139)
+                            .addComponent(jButton3))
+                        .addGroup(jPanel10Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addGap(10, 10, 10)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(lvlPromedio))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -361,7 +364,7 @@ public class FrmNotificaciones extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addComponent(lblLogo3)
                 .addContainerGap())
             .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -372,7 +375,7 @@ public class FrmNotificaciones extends javax.swing.JFrame {
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblLogo3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -394,7 +397,7 @@ public class FrmNotificaciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCursosActionPerformed
-
+        
     }//GEN-LAST:event_btnCursosActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -415,8 +418,6 @@ public class FrmNotificaciones extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -428,10 +429,11 @@ public class FrmNotificaciones extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblLogo2;
     private javax.swing.JLabel lblLogo3;
     private javax.swing.JLabel lblMenu;
     private javax.swing.JLabel lblMenu1;
-    private javax.swing.JLabel lvlPromedio;
     // End of variables declaration//GEN-END:variables
 }

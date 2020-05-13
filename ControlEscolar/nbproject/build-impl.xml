@@ -1006,9 +1006,9 @@ exists or setup the property manually. For example like this:
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target depends="init" name="library-inclusion-in-archive" unless="dist.ear.dir">
-        <copyfiles files="${file.reference.DominioMoodle.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <!--<copyfiles files="${file.reference.DominioMoodle.jar}" todir="${build.web.dir}/WEB-INF/lib"/>-->
         <copyfiles files="${libs.MySQLDriver.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copyfiles files="${file.reference.DominioMoodle.jar-1}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <!--<copyfiles files="${file.reference.DominioMoodle.jar-1}" todir="${build.web.dir}/WEB-INF/lib"/>-->
         <copyfiles files="${file.reference.DominioMoodle.jar-2}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">

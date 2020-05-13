@@ -45,8 +45,8 @@ public class MoodleConexion {
     public void conexion(){
        try{
             //------------------------------------configurar con puerto propio-----------------------------------
-            String usuario = "moodleuser"; //"root"
-            String contra = "yourpassword"; // ""
+            String usuario = "moodle-owner"; //moodleuser"; //"root"
+            String contra = "moodle123$%"; //yourpassword"; // ""
             Class.forName("com.mysql.jdbc.Driver");
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moodle?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", usuario, contra);
             st = cn.createStatement();

@@ -5,7 +5,7 @@
  */
 package frm;
 
-import conexion.JDBConexion;
+import conexion.JDBCConexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

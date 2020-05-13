@@ -34,13 +34,21 @@ private static ServicioAlarma s;
         //ArrayList<Calificacion> califsAlumno = new ArrayList<>();
         ArrayList<Alarma> alarmas = new ArrayList<>();
         
+        double promedio = 0.0;
+        int num = 0;
         ArrayList<Calificacion> califs = conn.obtenerListaCalificaciones();
         for (Calificacion calif : califs) {
             if(calif.getIduser() == alumnoId) {
                 //califsAlumno.add(calif);
-                if (calif.getCalificacion() < 70.00)
-                    alarmas.add(new Alarma(2, "Esto es una alarma, el estudiante con el id " + calif.getIduser() +" tiene bajas calificaciones."));
+                promedio = promedio += calif.getCalificacion();
+                num++;
             }
+        }
+        
+        promedio /= num;
+        
+        if(promedio < 70.00) {
+            alarmas.add(new Alarma(2, "!Las calificaciones de tu hijo han bajado!/Promedio: " + promedio));
         }
         
         return new Respuesta(alarmas, "");
