@@ -151,28 +151,4 @@ public class RESTConexion {
         }
     }
 
-    static class AlarmaResource_JerseyClient {
-
-        private WebTarget webTarget;
-        private Client client;
-
-        public AlarmaResource_JerseyClient() {
-            client = javax.ws.rs.client.ClientBuilder.newClient();
-            webTarget = client.target(BASE_URI).path("alarma");
-        }
-
-        public <T> T getAlarmasAlumnoId(Class<T> responseType, String alumnoId) throws ClientErrorException {
-            WebTarget resource = webTarget;
-            if (alumnoId != null) {
-                resource = resource.queryParam("alumnoId", alumnoId);
-            }
-            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-        }
-
-        public void close() {
-            client.close();
-        }
-    }
-
-
 }
