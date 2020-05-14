@@ -13,11 +13,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import objectosNegocio.Alumno;
-import objectosNegocio.Asignacion;
-import objectosNegocio.Calificacion;
-import objectosNegocio.Curso;
 import objectosNegocio.Mensaje;
 
 /**
@@ -59,6 +54,7 @@ public class ControlEscolarConexion {
     }
     public ArrayList<Mensaje> obtenerMensajesRelevantes(int userId){
        ArrayList <Mensaje> mensajes = new ArrayList <Mensaje>();
+     
         try {
               String sql = "SELECT * FROM mensajes WHERE remitenteId="+userId+ " OR recipienteId="+userId;
               ResultSet rs  = st.executeQuery(sql);

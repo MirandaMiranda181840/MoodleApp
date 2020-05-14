@@ -27,29 +27,6 @@ public class ServicioCalificaciones {
         return s;
     }
     
-    public Respuesta getCalificaciones() {
-        MoodleConexion conn = MoodleConexion.Instance();
-        System.out.println("todo");
-        return new Respuesta(conn.obtenerListaCalificaciones(), "");
-    }
-    
-    //busca calificaciones de un alumno
-    public Respuesta getCalificacionesAlumnoId(int alumnoId) {
-        MoodleConexion conn = MoodleConexion.Instance();
-        System.out.println("alumnoId");
-        ArrayList<Calificacion> califsAlumno = new ArrayList<>();
-        String mensaje = "";
-        
-        ArrayList<Calificacion> califs = conn.obtenerListaCalificaciones();
-        for (Calificacion calif : califs) {
-            if(calif.getIduser() == alumnoId) {
-                califsAlumno.add(calif);
-            }
-        }
-        
-        return new Respuesta(califsAlumno, mensaje);
-    }
-    
     public Respuesta getCursosAlumno(int alumnoId){
         MoodleConexion conn= MoodleConexion.Instance();
         return new Respuesta(conn.obtenerListaCursosAlumno(alumnoId),"");
@@ -59,4 +36,11 @@ public class ServicioCalificaciones {
            MoodleConexion conn= MoodleConexion.Instance();
         return new Respuesta(conn.obtenerListaAsignacionesCurso(cursoID),"");
     }
+    
+    public Respuesta getDetalleAsignacion(String infoId){
+        
+        MoodleConexion conn= MoodleConexion.Instance();
+        return new Respuesta(conn.obtenerDetalleAsignacion(infoId),"");
+    }
+    
 }

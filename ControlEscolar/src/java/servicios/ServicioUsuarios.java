@@ -30,4 +30,11 @@ public class ServicioUsuarios {
         
         return new Respuesta(conn.obtenerListaAlumnos(), "");
     }
-}
+    
+    public Respuesta getAlumnoId(int idAlumno){
+        MoodleConexion conn = MoodleConexion.Instance();
+        
+        return new Respuesta(conn.obtenerAlumnoId(idAlumno), "");
+    }
+    
+} 

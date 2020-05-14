@@ -5,7 +5,7 @@
  */
 package frm;
 
-import conexion.RESTConexion;
+import conexion.RESTfulConexion;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -23,7 +23,7 @@ public class dlgAlumnos extends javax.swing.JDialog {
 //
 //    public Connection cn;
 //    public Statement st;
-    RESTConexion.UsuariosResource_Client conexion;
+    RESTfulConexion.UsuariosResource_Client conexion;
     ArrayList<Alumno> alumnos;
     /**
      * Creates new form dlgAlumnos
@@ -32,7 +32,7 @@ public class dlgAlumnos extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        conexion=new RESTConexion.UsuariosResource_Client();
+        conexion=new RESTfulConexion.UsuariosResource_Client();
         alumnos= new ArrayList <Alumno>();
         mostrartabla();
     }

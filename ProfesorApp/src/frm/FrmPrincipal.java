@@ -5,7 +5,7 @@
  */
 package frm;
 
-import conexion.RESTConexion;
+import conexion.RESTfulConexion;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import objectosNegocio.Alarma;
@@ -20,18 +20,18 @@ import objectosNegocio.Mensaje;
  */
 public class FrmPrincipal extends javax.swing.JFrame {
 
-    RESTConexion.MensajeriaResource_Client conexionMensajeria;
-    RESTConexion.AlarmaResource_Client conexionAlarmas;
-    RESTConexion.CalificacionesProfesoresResource_Client conexionCalProf;
+    RESTfulConexion.MensajeriaResource_Client conexionMensajeria;
+    RESTfulConexion.AlarmaResource_Client conexionAlarmas;
+    RESTfulConexion.CalificacionesProfesoresResource_Client conexionCalProf;
     /**
      * Creates new form FrmPrincipal
      */
     public FrmPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
-        conexionMensajeria=new RESTConexion.MensajeriaResource_Client();
-        conexionAlarmas=new RESTConexion.AlarmaResource_Client();
-        conexionCalProf=new RESTConexion.CalificacionesProfesoresResource_Client();
+        conexionMensajeria=new RESTfulConexion.MensajeriaResource_Client();
+        conexionAlarmas=new RESTfulConexion.AlarmaResource_Client();
+        conexionCalProf=new RESTfulConexion.CalificacionesProfesoresResource_Client();
     }
 
     /**

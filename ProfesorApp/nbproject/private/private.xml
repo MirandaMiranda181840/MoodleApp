@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-<<<<<<< HEAD
-=======
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Email/Documents/NetBeansProjects/MoodleApp/ProfesorApp/src/frm/dlgCalificaciones.java</file>
-            <file>file:/C:/Users/Email/Documents/NetBeansProjects/MoodleApp/ProfesorApp/src/conexion/RESTConexion.java</file>
-            <file>file:/C:/Users/Email/Documents/NetBeansProjects/MoodleApp/ProfesorApp/src/frm/dlgCursos.java</file>
-            <file>file:/C:/Users/Email/Documents/NetBeansProjects/MoodleApp/ProfesorApp/src/frm/dlgAsignaciones.java</file>
+            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/ProfesorApp/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/ProfesorApp/src/frm/dlgAsignaciones.java</file>
+            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/ProfesorApp/src/frm/dlgCursos.java</file>
+            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/ProfesorApp/build.xml</file>
+            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/ProfesorApp/src/frm/dlgAlumnos.java</file>
+            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/ProfesorApp/nbproject/project.properties</file>
+            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/ProfesorApp/src/conexion/RESTfulConexion.java</file>
+            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/ProfesorApp/nbproject/genfiles.properties</file>
+            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/ProfesorApp/nbproject/project.xml</file>
         </group>
     </open-files>
->>>>>>> 4d164fc1736ab9c0a42e3343c242802d4039e238
 </project-private>

@@ -5,9 +5,8 @@
  */
 package conexion;
 
+import com.sun.security.ntlm.Client;
 import javax.ws.rs.ClientErrorException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
 
 /**
  *
@@ -28,7 +27,7 @@ public class RESTConexion {
     */
     
     
-    private static final String BASE_URI = "http://localhost:64550/ControlEscolar/webresources";
+    private static final String BASE_URI = "http://localhost:8080/ControlEscolar/webresources";
         
     public static class CalificacionesResource_Client {
 
@@ -160,7 +159,5 @@ public class RESTConexion {
             client.close();
         }
     }
-
-
     
 }

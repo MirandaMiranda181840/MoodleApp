@@ -5,7 +5,7 @@
  */
 package frm;
 
-import conexion.RESTConexion;
+import conexion.RESTfulConexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import objectosNegocio.Respuesta;
  */
 public class dlgCalificaciones extends javax.swing.JDialog {
 
-   RESTConexion.CalificacionesResource_Client conexion;
+   RESTfulConexion.CalificacionesResource_Client conexion;
    ArrayList <Calificacion> calificaciones;
     
     /**
@@ -34,7 +34,7 @@ public class dlgCalificaciones extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);   
-        conexion=new RESTConexion.CalificacionesResource_Client();
+        conexion=new RESTfulConexion.CalificacionesResource_Client();
         calificaciones= new ArrayList <Calificacion>();
         mostrartabla();
         

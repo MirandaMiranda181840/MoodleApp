@@ -51,6 +51,17 @@ public class UsuariosResource {
         return Response.ok((ArrayList<Alumno>) usuarios.getRespuesta(), MediaType.APPLICATION_JSON).build();
     }
     
+    
+   @GET
+   @Produces
+   public Response getUsuarios2(){
+       ServicioUsuarios serv = ServicioUsuarios.Instance();
+        
+        //cambiar despues para todo tipo de usuarios
+        Respuesta usuarios = serv.getUsuarios();
+        
+        return Response.ok((ArrayList<Alumno>) usuarios.getRespuesta(), MediaType.APPLICATION_JSON).build();
+   }
     /**
      * PUT method for updating or creating an instance of UsuariosResource
      * @param content representation for the resource
