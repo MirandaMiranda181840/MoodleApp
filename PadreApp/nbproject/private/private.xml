@@ -3,27 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/frmMensajes.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/dlgBienvenida.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/nbproject/private/private.xml</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/nbproject/build-impl.xml</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/entidades/Padre.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/nbproject/private/private.properties</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/build.xml</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/frmRegistrarse.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/manifest.mf</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/FrmAsignaciones.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/nbproject/private/config.properties</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/FrmPrincipal.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/frmIniciarSesion.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/frmCursos.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/FrmNotificaciones.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/FrmLogin.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/conexion/RESTConexion.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/frmAsignacion.java</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/nbproject/project.xml</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/nbproject/project.properties</file>
-            <file>file:/C:/Users/crisb/Desktop/Moodle/MoodleApp/PadreApp/src/interfaces/paneles/PanelCurso.java</file>
+            <file>file:/C:/Users/miran/OneDrive/Documents/Semestre%206/Sistemas%20distribuidos/MoodleApp/PadreApp/src/conexion/RESTConexion.java</file>
         </group>
     </open-files>
 </project-private>

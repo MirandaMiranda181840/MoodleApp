@@ -7,6 +7,7 @@ package interfaces;
 
 import conexion.RESTConexion;
 import interfaces.paneles.PanelAsignacion;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import objectosNegocio.Asignacion;
@@ -35,10 +36,15 @@ public class FrmAsignaciones extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
      private void llenarCursos(){
-           int contadorPanel=0;
+         int contadorPanel=0;
         int contadorPanelAumento=82;
-         //puse id del curso 2 por mientras
+        
+        this.panelAsignaciones.setSize(325, 500);
+
+        //puse id del curso 2 por mientras
         Asignacion[]asignaciones=conexion.getAsignaconesCursoId(Asignacion[].class, Integer.toString(this.cursoId));
+        
+        
         for(Asignacion asignacion: asignaciones){
             this.asignacionesCurso.add(asignacion);
         }
@@ -49,10 +55,12 @@ public class FrmAsignaciones extends javax.swing.JFrame {
        for (int i = 0; i < asignacionesCurso.size(); i++) {
             PanelAsignacion panel= new PanelAsignacion(this.parentUser,asignacionesCurso.get(i).getNombre(),
             this.cursoId, asignacionesCurso.get(i).getId());
-            panelAsignaciones.add(panel).setBounds(0, contadorPanel, 270, 80);
-            contadorPanel=contadorPanel+contadorPanelAumento;
+            panel.setSize(new Dimension(278, 49));
+            panelAsignaciones.add(panel).setBounds(0, contadorPanel, 325, 56);
+            contadorPanel=contadorPanel+(contadorPanelAumento-10);
         }
          System.out.println(asignacionesCurso.toString());
+         
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -124,7 +132,7 @@ public class FrmAsignaciones extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Curso: Historia");
+        jLabel2.setText("Curso: ");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -172,6 +180,7 @@ public class FrmAsignaciones extends javax.swing.JFrame {
         jLabel1.setText("Asignaciones");
 
         panelAsignaciones.setBackground(new java.awt.Color(247, 125, 19));
+        panelAsignaciones.setPreferredSize(new java.awt.Dimension(325, 356));
 
         javax.swing.GroupLayout panelAsignacionesLayout = new javax.swing.GroupLayout(panelAsignaciones);
         panelAsignaciones.setLayout(panelAsignacionesLayout);

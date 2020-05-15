@@ -18,7 +18,6 @@ import objectosNegocio.Asignacion;
 import objectosNegocio.Calificacion;
 import objectosNegocio.Curso;
 import objectosNegocio.DetalleAsignacion;
-import objectosNegocio.Prueba;
 
 /**
  *
@@ -45,8 +44,8 @@ public class MoodleConexion {
     public void conexion(){
        try{
             //------------------------------------configurar con puerto propio-----------------------------------
-            String usuario = "moodleuser"; //moodleuser"; //"root" //"moodle-owner"
-            String contra = "yourpassword"; //yourpassword"; // ""//"moodle123$%"
+            String usuario = "root"; //moodleuser"; //"root" //"moodle-owner"
+            String contra = ""; //yourpassword"; // ""//"moodle123$%"
             Class.forName("com.mysql.jdbc.Driver");
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/moodle?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", usuario, contra);
             st = cn.createStatement();
@@ -190,10 +189,6 @@ public class MoodleConexion {
           return detalleAsignacion;
     }
      
-     public Prueba getPrueba(){
-         Prueba prueba= new Prueba("holi");
-         return prueba;
-     }
    
     
 }

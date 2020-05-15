@@ -6,6 +6,7 @@
 package interfaces.paneles;
 
 import interfaces.FrmAsignaciones;
+import java.awt.Dimension;
 import objectosNegocio.ParentUser;
 
 /**
@@ -38,6 +39,8 @@ public class PanelCurso extends javax.swing.JPanel {
         btnCurso2 = new javax.swing.JButton();
         lblNombreCurso = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(252, 189, 131));
+
         btnCurso2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/adelante.png"))); // NOI18N
         btnCurso2.setBorder(null);
         btnCurso2.setContentAreaFilled(false);
@@ -47,28 +50,24 @@ public class PanelCurso extends javax.swing.JPanel {
             }
         });
 
-        lblNombreCurso.setFont(new java.awt.Font("Montserrat", 0, 30)); // NOI18N
+        lblNombreCurso.setFont(new java.awt.Font("Montserrat", 0, 22)); // NOI18N
         lblNombreCurso.setForeground(new java.awt.Color(255, 255, 255));
-        lblNombreCurso.setText("Historia");
+        lblNombreCurso.setText("Ingles avanzado");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(lblNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
-                .addComponent(btnCurso2)
-                .addContainerGap())
+                .addContainerGap()
+                .addComponent(lblNombreCurso, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCurso2))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblNombreCurso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCurso2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(btnCurso2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblNombreCurso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -81,19 +80,7 @@ FrmAsignaciones asignaciones = new FrmAsignaciones(parentUser,idCurso);
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCurso1;
     private javax.swing.JButton btnCurso2;
-    private javax.swing.JButton btnCurso3;
-    private javax.swing.JButton btnCurso4;
-    private javax.swing.JButton btnCurso5;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JLabel lblNombreCurso;
     // End of variables declaration//GEN-END:variables
 }

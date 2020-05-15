@@ -6,6 +6,9 @@
 package interfaces;
 
 import conexion.RESTConexion;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import objectosNegocio.DetalleAsignacion;
 import objectosNegocio.ParentUser;
@@ -44,8 +47,16 @@ public class frmAsignacion extends javax.swing.JFrame {
         
         DetalleAsignacion detalle= conexion.getDetalleAsignacionId(DetalleAsignacion.class, idInfo);
         if(detalle!=null){
-            txtDescripcion.setText(detalle.getDescripcion());
-            txtFechaEntrega.setText(detalle.getFechaDeEntrega());
+            
+            String descripFormato = detalle.getDescripcion().replaceAll("<p>", "");
+            String descripFormato2 = descripFormato.replaceAll("</p>", "");
+            txtDescripcion.setText(descripFormato2);
+            
+            Date date = new Date ();
+            date.setTime((long)Long.valueOf(detalle.getFechaDeEntrega())*1000);
+            String fecha = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            
+            txtFechaEntrega.setText(fecha);
             
              if(detalle.isStatus()){
                  txtEstatus.setText("Tu hij@ "+parentUser.getChildFirstName()+" a entregado esta tarea");
@@ -75,7 +86,7 @@ public class frmAsignacion extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         lblMenu1 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         lblLogo3 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -101,20 +112,20 @@ public class frmAsignacion extends javax.swing.JFrame {
 
         jPanel9.setBackground(new java.awt.Color(59, 53, 53));
 
-        jLabel2.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Historia: Asignación 1");
+        lblTitulo.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText("Detalles Asignación");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -156,6 +167,11 @@ public class frmAsignacion extends javax.swing.JFrame {
         txtDescripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtDescripcion.setText("Esta es la descripción");
         txtDescripcion.setToolTipText("");
+        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDescripcionActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -291,6 +307,10 @@ public class frmAsignacion extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescripcionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -299,7 +319,6 @@ public class frmAsignacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -311,6 +330,7 @@ public class frmAsignacion extends javax.swing.JFrame {
     private javax.swing.JLabel lblLogo3;
     private javax.swing.JLabel lblMenu1;
     private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblTitulo;
     private javax.swing.JTextField txtCalificacion;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtEstatus;

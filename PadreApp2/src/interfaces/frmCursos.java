@@ -49,8 +49,8 @@ public class frmCursos extends javax.swing.JFrame {
         }
         for (int i = 0; i < cursosAlumno.size(); i++) {
             PanelCurso panel= new PanelCurso(parentUser,cursosAlumno.get(i).getId(),cursosAlumno.get(i).getNombre());
-            panelCursos.add(panel).setBounds(0, contadorPanel, 250, 90);
-            contadorPanel=contadorPanel+contadorPanelAumento;
+            panelCursos.add(panel).setBounds(0, contadorPanel, 325, 68);
+            contadorPanel=contadorPanel+(contadorPanelAumento-20);
         }
        
         System.out.println(cursosAlumno.toString());
@@ -130,12 +130,13 @@ public class frmCursos extends javax.swing.JFrame {
         });
 
         panelCursos.setBackground(new java.awt.Color(247, 125, 19));
+        panelCursos.setPreferredSize(new java.awt.Dimension(325, 393));
 
         javax.swing.GroupLayout panelCursosLayout = new javax.swing.GroupLayout(panelCursos);
         panelCursos.setLayout(panelCursosLayout);
         panelCursosLayout.setHorizontalGroup(
             panelCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 328, Short.MAX_VALUE)
         );
         panelCursosLayout.setVerticalGroup(
             panelCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,10 +151,10 @@ public class frmCursos extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblLogo3)
                 .addContainerGap())
-            .addComponent(panelCursos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
