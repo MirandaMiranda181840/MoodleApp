@@ -5,8 +5,9 @@
  */
 package conexion;
 
-import com.sun.security.ntlm.Client;
 import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
 
 /**
  *
