@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import conexion.RESTConexion;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
@@ -280,11 +281,15 @@ public class frmRegistrarse extends javax.swing.JFrame {
                         txtNombre.getText().matches("^[a-zA-Z ]*$") &&
                         txtApellido.getText().matches("^[a-zA-Z ]*$")) {
                     
+                    String token = new RESTConexion.APIResource_JerseyClient().registrarPadre(String.class, 
+                            txtContrasena.getText(), txtCodigo.getText(), txtApellido.getText(), txtNombre.getText(), txtEmail.getText()
+                    );
+                    System.out.println(token);
                         //AQUÍ VA EL CÓDIGO PARA REGISTRARLO
                          parentUser=ParentUser.Instance(txtNombre.getText(), txtApellido.getText(), 
                                  txtEmail.getText(), txtContrasena.getText(), 
                                  "", "", Integer.parseInt(txtCodigo.getText())); //5);
-
+                      
                       //Esto pasa si el registro va bien
                       dlgBienvenida bien = new dlgBienvenida(this, true,parentUser);
                       bien.setVisible(true);
