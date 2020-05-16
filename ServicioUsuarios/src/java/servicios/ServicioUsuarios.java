@@ -6,6 +6,7 @@
 package servicios;
 
 import conexionapimoodle.ConexionMoodle;
+import conexioncontrolescolar.ConexionControlEscolar;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,12 +31,47 @@ public class ServicioUsuarios {
         return s;
     }
     
+    public Respuesta registrarPadre(String nombre, String apellido, String email, String password, String codigoAlumno) {
+        ConexionControlEscolar con = ConexionControlEscolar.Instance();
+        
+        String token = null;
+        String mensaje = "";
+        try {
+            token = con.registrarUsuario(nombre, apellido, email, password, codigoAlumno);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            mensaje = ex.getMessage();
+        }
+        if(token == null)
+            return new Respuesta(null, mensaje);
+        
+        return new Respuesta(token, "");
+    }
+    
+    public Respuesta loguearPadre(String email, String password) {
+        ConexionControlEscolar con = ConexionControlEscolar.Instance();
+        
+        String token = null;
+        String mensaje = "";
+        try {
+            token = con.loguearUsuario(email, password);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            mensaje = ex.getMessage();
+        }
+        if(token == null)
+            return new Respuesta(null, mensaje);
+        
+        return new Respuesta(token, "");
+    }
+    
+    /*
     public Respuesta autenticarUsuario(String username, String password) {
         ConexionMoodle con = new ConexionMoodle(0);
         
         String respuesta;
         try {
-            respuesta = con.AutenticarUsuario(username, password);
+           respuesta = con.AutenticarUsuario(username, password);
            return new Respuesta(respuesta, "");
         } catch (IOException ex) {
             Logger.getLogger(ServicioUsuarios.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,4 +98,5 @@ public class ServicioUsuarios {
             return new Respuesta(null, "Error al crear usuario.");
         }
     }
+    */
 } 
