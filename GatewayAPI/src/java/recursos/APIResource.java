@@ -37,45 +37,65 @@ public class APIResource {
     public APIResource() {
     }
 
+//    
+//    /**
+//     * Retrieves representation of an instance of recursos.APIResource
+//     * @param nombre
+//     * @param apellido
+//     * @param email
+//     * @param password
+//     * @param codigoAlumno
+//     * @return an instance of java.lang.String
+//     */
+//    @POST
+//    @Consumes(MediaType.TEXT_PLAIN)
+//    @Produces({MediaType.APPLICATION_JSON})
+//    @Path("registrar")
+//    public Response registrarPadre(
+//            @QueryParam("nombre") String nombre, 
+//            @QueryParam("apellido") String apellido, 
+//            @QueryParam("email") String email, 
+//            @QueryParam("password") String password, 
+//            @QueryParam("codigoAlumno") String codigoAlumno) {
+//        String token = new Conexiones.UsuariosResource_JerseyClient().registrarPadre(String.class, password, codigoAlumno, apellido, nombre, email);
+//        return Response.ok(token, MediaType.TEXT_PLAIN).build();
+//    }
+//
+//    /**
+//     *
+//     * @param email
+//     * @param password
+//     * @return
+//     */
+//    @POST
+//    @Produces(MediaType.TEXT_PLAIN)
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    @Path("login")
+//    public Response loguearPadre(@QueryParam("email")String email, @QueryParam("password")String password) {
+//        String token = new Conexiones.UsuariosResource_JerseyClient().loguearPadre(String.class, password, email);
+//        
+//        return Response.ok(token, MediaType.TEXT_PLAIN).build();
+//    }
     
-    /**
-     * Retrieves representation of an instance of recursos.APIResource
-     * @param nombre
-     * @param apellido
-     * @param email
-     * @param password
-     * @param codigoAlumno
-     * @return an instance of java.lang.String
-     */
-    @POST
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("registrar")
-    public Response registrarPadre(
-            @QueryParam("nombre") String nombre, 
-            @QueryParam("apellido") String apellido, 
-            @QueryParam("email") String email, 
-            @QueryParam("password") String password, 
-            @QueryParam("codigoAlumno") String codigoAlumno) {
-        String token = new Conexiones.UsuariosResource_JerseyClient().registrarPadre(String.class, password, codigoAlumno, apellido, nombre, email);
-        return Response.ok(token, MediaType.TEXT_PLAIN).build();
-    }
-
-    /**
-     *
-     * @param email
-     * @param password
-     * @return
-     */
     @POST
     @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes({MediaType.APPLICATION_JSON})
     @Path("login")
-    public Response loguearPadre(@QueryParam("email")String email, @QueryParam("password")String password) {
-        String token = new Conexiones.UsuariosResource_JerseyClient().loguearPadre(String.class, password, email);
+    public Response loguearPadre(@QueryParam("email") String email, @QueryParam ("password")String password) {
+         String token = new Conexiones.UsuariosResource_JerseyClient().loguearPadre(String.class, password, email);
         
         return Response.ok(token, MediaType.TEXT_PLAIN).build();
     }
+    
+  @POST
+  @Produces(MediaType.TEXT_PLAIN)
+  @Consumes({MediaType.APPLICATION_JSON})
+  @Path("reigstrar")
+  public Response RegistrarPadre(@QueryParam("nombre") String nombre, @QueryParam ("apellido") String apellido, @QueryParam ("email") String email,
+          @QueryParam ("password")String password, @QueryParam ("codigoAlumno") String codigoAlumno ){
+       String token = new Conexiones.UsuariosResource_JerseyClient().registrarPadre(String.class, password, codigoAlumno, apellido, nombre, email);
+      return Response.ok(token, MediaType.TEXT_PLAIN).build();
+  }
     
    
 }
