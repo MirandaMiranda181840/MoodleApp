@@ -27,6 +27,7 @@ public class ConexionMoodle {
         }else if(permiso == 1) {
             this.token = "6ea014ed3c695a1168c2b817d7317cd6"; //token creacion de usuarios
         }
+        this.dominio = "http://localhost/moodle";
     }
    
     public ConexionMoodle(String token) {
@@ -68,7 +69,7 @@ public class ConexionMoodle {
     public String AutenticarUsuario(String username, String password) throws IOException {
         String formato = "&moodlewsrestformat=json";
 
-        String serverurl = this.dominio + "/webservice/rest/server.php" + "?username=" + username + "&password=" + password + "&service=moodle_mobile_app";
+        String serverurl = this.dominio + "/login/token.php" + "?username=" + username + "&password=" + password + "&service=moodle_mobile_app";
 
         HttpURLConnection con = (HttpURLConnection) new URL(serverurl).openConnection();
         con.setRequestMethod("POST");

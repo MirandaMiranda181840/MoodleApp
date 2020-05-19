@@ -5,7 +5,15 @@
  */
 package interfaces;
 
+import conexion.RESTConexion;
+import java.awt.Color;
+import java.awt.color.ColorSpace;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import objectosNegocio.ParentUser;
 
 /**
@@ -77,6 +85,11 @@ public class frmIniciarSesion extends javax.swing.JFrame {
 
         txtCorreo.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         txtCorreo.setToolTipText("");
+        txtCorreo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCorreoActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Montserrat", 1, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -112,6 +125,14 @@ public class frmIniciarSesion extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(71, 71, 71)
+                    .addComponent(jLabel3)
+                    .addContainerGap(92, Short.MAX_VALUE))
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                    .addGap(102, 102, 102)
+                    .addComponent(jLabel4)))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -122,41 +143,33 @@ public class frmIniciarSesion extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(83, 83, 83)
-                                .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addGap(34, 34, 34)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtContrasena)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtCorreo)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jLabel3)
-                                                .addGap(32, 32, 32)))))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addGap(102, 102, 102)
-                                    .addComponent(jLabel4))))
-                        .addGap(0, 45, Short.MAX_VALUE)))
+                                .addGap(45, 45, 45)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(84, 84, 84)
+                                .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 37, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(57, 57, 57)
                 .addComponent(jLabel2)
-                .addGap(37, 37, 37)
+                .addGap(55, 55, 55)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
+                .addGap(51, 51, 51)
                 .addComponent(btnIniciarSesion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton2)
                     .addComponent(lblLogo1))
@@ -181,12 +194,14 @@ public class frmIniciarSesion extends javax.swing.JFrame {
         FrmLogin login = new FrmLogin();
         login.setVisible(true);
         this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         FrmLogin login = new FrmLogin();
         login.setVisible(true);
         this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
@@ -194,14 +209,49 @@ public class frmIniciarSesion extends javax.swing.JFrame {
         if(!txtCorreo.getText().isEmpty() && !txtContrasena.getText().isEmpty()){
             
             if(txtCorreo.getText().matches("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")){
-                
-                //AQUÍ VA EL TEXTO PARA BUSCAR AL USUARIO EN LA BD
-                
-                //Esto pasa si sale todo bien
-                FrmPrincipal principal = new FrmPrincipal(parentUser);
-                principal.setVisible(true);
-                this.setVisible(false);
-                
+                try{
+                    String token = new RESTConexion.UsuarioResource_JerseyClient().loguearPadre(
+                        String.class, 
+                        txtContrasena.getText(),
+                        txtCorreo.getText()
+                    );
+
+                    if(token != null){
+                        System.out.println(token);
+                        String fullname = new RESTConexion.UsuarioResource_JerseyClient().obtenerNombreUsuario(String.class, txtCorreo.getText(), token);
+                        System.out.println(fullname);
+                        ArrayList<String> list = new ArrayList<String>(Arrays.asList(fullname.split(" ")));
+                        //AQUÍ VA EL CÓDIGO PARA REGISTRARLO
+                        System.out.println(list.toString());
+                        parentUser=ParentUser.crear(
+                            list.get(0), list.get(1),
+                            txtCorreo.getText(), txtContrasena.getText(), 
+                            token
+                        );
+                        UIManager UI=new UIManager(); 
+                        UI.put("OptionPane.background", Color.ORANGE); 
+                        JOptionPane.showMessageDialog(null, "Logueo exitoso.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                        //Esto pasa si sale todo bien
+                        /*
+                        FrmPrincipal principal = new FrmPrincipal(parentUser);
+                        principal.setVisible(true);
+                        this.setVisible(false);*/
+                        dlgBienvenida bien = new dlgBienvenida(this, true,parentUser);
+                         bien.setVisible(true);
+                         this.setVisible(false);  
+                         
+                         
+                         try{
+                             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                            frame.dispose();
+                         }catch(Exception e){
+                             System.out.println("Errorsito para cerrar las pantallas, un bugsitojiji");
+                         }
+                         
+                    }
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+                }
             }else{
                 JOptionPane.showMessageDialog(this, "Llene los campos correctamente", "Campos", JOptionPane.WARNING_MESSAGE);
             }
@@ -211,6 +261,10 @@ public class frmIniciarSesion extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+    private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCorreoActionPerformed
 
    
    

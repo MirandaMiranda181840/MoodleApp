@@ -11,32 +11,31 @@ package objectosNegocio;
  * @author crisb
  */
 public class ParentUser {
-    private String firstName, lastName, email, password,childFirstName, childLastName;
-    private int childID;
+    private String firstName, lastName, email, password, token;
 
     private static ParentUser parentUser;
     
     private ParentUser() {
     }
     
-    public static ParentUser Instance(String firstName, String lastName, String email, String password, String childFirstName, String childLastName, int childID) {
-        if (parentUser == null) {
-            //por mientras tiene valores seteados en lo que hacemos el login
-            parentUser = new ParentUser(firstName,lastName,email,password,childFirstName,childLastName,childID);
-        }
+    public static ParentUser crear(String firstName, String lastName, String email, String password, String token) {
+        parentUser = new ParentUser(firstName,lastName,email,password, token);
         
         return parentUser;
     }
-    public ParentUser(String firstName, String lastName, String email, String password, String childFirstName, String childLastName, int childID) {
+    
+    public static ParentUser Instance() {
+        return parentUser;
+    }
+    
+    public ParentUser(String firstName, String lastName, String email, String password, String token) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.childFirstName = childFirstName;
-        this.childLastName = childLastName;
-        this.childID = childID;
+        this.token = token;
     }
-
+    
     public String getFirstName() {
         return firstName;
     }
@@ -69,29 +68,13 @@ public class ParentUser {
         this.password = password;
     }
 
-    public String getChildFirstName() {
-        return childFirstName;
+    public String getToken() {
+        return token;
     }
 
-    public void setChildFirstName(String childFirstName) {
-        this.childFirstName = childFirstName;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public String getChildLastName() {
-        return childLastName;
-    }
-
-    public void setChildLastName(String childLastName) {
-        this.childLastName = childLastName;
-    }
-
-    public int getChildID() {
-        return childID;
-    }
-
-    public void setChildID(int childID) {
-        this.childID = childID;
-    }
-    
     
 }

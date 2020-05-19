@@ -34,7 +34,7 @@ public class ServicioMensajeria {
     
     public void enviarMensaje(int remitenteId, int recipienteId, String mensaje) {
         ConexionControlEscolar conn = ConexionControlEscolar.Instance();
-        
+        System.out.println(remitenteId + ", " + recipienteId + ", " + mensaje);
         conn.enviarMensaje(remitenteId, recipienteId, mensaje);
     }
 }

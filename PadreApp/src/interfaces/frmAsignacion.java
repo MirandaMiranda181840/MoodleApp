@@ -6,9 +6,12 @@
 package interfaces;
 
 import conexion.RESTConexion;
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.ImageIcon;
 import objectosNegocio.Asignacion;
-import objectosNegocio.Curso;
+import objectosNegocio.DatosAsignacion;
 import objectosNegocio.ParentUser;
 
 /**
@@ -21,18 +24,54 @@ public class frmAsignacion extends javax.swing.JFrame {
      * Creates new form frmAsignacion
      */
     ParentUser parentUser;
-    RESTConexion.CalificacionesResource_Client conexion;
-     ArrayList<Asignacion> asignacionesCurso;
-    public frmAsignacion(ParentUser parentUser) {
+    RESTConexion.CalificacionesResource_JerseyClient conexion;
+   
+     private int idAsignacion;
+     private int idCurso;
+     private Asignacion asig;
+    public frmAsignacion(ParentUser parentUser, int idAsignacion, int idCurso, Asignacion asig) {
         initComponents();
-        conexion=new RESTConexion.CalificacionesResource_Client();
+        this.idAsignacion=idAsignacion;
+        this.idCurso=idCurso;
+        this.asig = asig;
         this.parentUser=parentUser;
-        this.asignacionesCurso=new ArrayList <Asignacion>();
+        conexion=new RESTConexion.CalificacionesResource_JerseyClient();
+       llenarAsignacion();
+        
     
     setLocationRelativeTo(null);
     }
     
-    
+    private void llenarAsignacion(){
+        //este es un formato que se necesita crear para usar el rest service
+        
+        DatosAsignacion detalle= conexion.getCalificaciones(DatosAsignacion.class, this.idAsignacion, this.asig.getIdcurso(), parentUser.getToken());
+        if(detalle!=null){
+            System.out.println("fecha calificada: " + detalle.getFechacalificada());
+            String descripFormato = asig.getIntroduccion().replaceAll("<p>", "");
+            String descripFormato2 = descripFormato.replaceAll("</p>", "");
+            txtDescripcion.setText(descripFormato2);
+            
+            Date date = new Date();
+            date.setTime((long)Long.valueOf(this.asig.getFechaEntrega())*1000);
+            String fecha = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            
+            txtFechaEntrega.setText(fecha);
+            
+             if(detalle.getTimecreated() > 0){
+                 txtEstatus.setText("Tu hij@ ha entregado esta tarea");
+                 lblStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/si.png")));
+             }else{
+                 txtEstatus.setText("Tu hij@ NO ha entregado esta tarea");   
+                 lblStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/no.png")));
+             }
+            if(detalle.getFechacalificada() <= 0){ //negativo
+                txtCalificacion.setText("Esta tarea no ha sido calificada aún.");
+            }else{
+                txtCalificacion.setText(Double.toString(detalle.getGrade())+"/100.0");
+            }
+        }
+    }
     
 
     /**
@@ -48,19 +87,19 @@ public class frmAsignacion extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         lblMenu1 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         lblLogo3 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtFechaEntrega = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        txtEstatus = new javax.swing.JTextField();
+        lblStatus = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtCalificacion = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -74,20 +113,20 @@ public class frmAsignacion extends javax.swing.JFrame {
 
         jPanel9.setBackground(new java.awt.Color(59, 53, 53));
 
-        jLabel2.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Historia: Asignación 1");
+        lblTitulo.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText("Detalles Asignación");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -129,16 +168,21 @@ public class frmAsignacion extends javax.swing.JFrame {
         txtDescripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtDescripcion.setText("Esta es la descripción");
         txtDescripcion.setToolTipText("");
+        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDescripcionActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Fecha de entrega:");
 
-        jTextField1.setEditable(false);
-        jTextField1.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextField1.setText("10/05/2020");
+        txtFechaEntrega.setEditable(false);
+        txtFechaEntrega.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        txtFechaEntrega.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtFechaEntrega.setText("10/05/2020");
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/calendario.png"))); // NOI18N
 
@@ -147,22 +191,22 @@ public class frmAsignacion extends javax.swing.JFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Estatus:");
 
-        jTextField2.setEditable(false);
-        jTextField2.setFont(new java.awt.Font("Montserrat", 0, 10)); // NOI18N
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField2.setText("Tu hijo Fernando Parra a entregado la tarea");
+        txtEstatus.setEditable(false);
+        txtEstatus.setFont(new java.awt.Font("Montserrat", 0, 10)); // NOI18N
+        txtEstatus.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtEstatus.setText("Tu hijo Fernando Parra a entregado la tarea");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/si.png"))); // NOI18N
+        lblStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/si.png"))); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Calificación:");
 
-        jTextField3.setEditable(false);
-        jTextField3.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField3.setText("8.7/10");
+        txtCalificacion.setEditable(false);
+        txtCalificacion.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        txtCalificacion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtCalificacion.setText("8.7/10");
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/calif.png"))); // NOI18N
 
@@ -177,20 +221,8 @@ public class frmAsignacion extends javax.swing.JFrame {
                 .addGap(92, 92, 92)
                 .addComponent(jLabel6)
                 .addGap(4, 4, 4)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblLogo3)
-                .addContainerGap())
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(109, 109, 109)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(32, Short.MAX_VALUE)
@@ -199,13 +231,29 @@ public class frmAsignacion extends javax.swing.JFrame {
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(2, 2, 2)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(117, 117, 117))))
+                        .addComponent(txtEstatus, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39))))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblLogo3))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(109, 109, 109)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblStatus))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,27 +267,24 @@ public class frmAsignacion extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jLabel4))
+                    .addComponent(lblStatus))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtEstatus, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField3)
-                            .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                        .addComponent(lblLogo3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
+                    .addComponent(jLabel8)
+                    .addComponent(txtCalificacion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblLogo3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
@@ -258,10 +303,15 @@ public class frmAsignacion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        FrmPrincipal login = new FrmPrincipal(parentUser);
-        login.setVisible(true);
+        FrmAsignaciones f = new FrmAsignaciones(parentUser, this.idCurso);
+        f.setVisible(true);
         this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescripcionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,9 +321,7 @@ public class frmAsignacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -281,11 +329,13 @@ public class frmAsignacion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lblLogo3;
     private javax.swing.JLabel lblMenu1;
+    private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTextField txtCalificacion;
     private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtEstatus;
+    private javax.swing.JTextField txtFechaEntrega;
     // End of variables declaration//GEN-END:variables
 }

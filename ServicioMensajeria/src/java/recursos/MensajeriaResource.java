@@ -6,22 +6,21 @@
 package recursos;
 
 import conexioncontrolescolar.ConexionControlEscolar;
+import conexiones.Conexion;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import objectosNegocio.Calificacion;
 import objectosNegocio.Mensaje;
 import objectosNegocio.Respuesta;
 import servicios.ServicioMensajeria;
@@ -54,11 +53,11 @@ public class MensajeriaResource {
     @Path("obtenermensajes")
     public Response getMensajesRelevantes(@QueryParam("token") String token) {
         ServicioMensajeria serv = ServicioMensajeria.Instance();
-        ConexionControlEscolar con = ConexionControlEscolar.Instance();
+        Conexion.UsuarioResource_JerseyClient con = new Conexion.UsuarioResource_JerseyClient();
         
         int userId = -1;
         try {
-            userId = con.obtenerIdDesdeToken(token);
+            userId = con.obtenerIdUsuario(Integer.class, token);
         } catch (Exception ex) {
             Logger.getLogger(MensajeriaResource.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -68,7 +67,12 @@ public class MensajeriaResource {
         
         Respuesta mensajes = serv.getMensajesRelevantes(userId);
         
-        return Response.ok((ArrayList<Mensaje>) mensajes.getRespuesta(), MediaType.APPLICATION_JSON).build();
+        ArrayList<Mensaje> list = (ArrayList<Mensaje>) mensajes.getRespuesta();
+        
+        Mensaje[] _arr = new Mensaje[list.size()]; 
+        _arr = list.toArray(_arr); 
+        
+        return Response.ok(_arr, MediaType.APPLICATION_JSON).build();
     }
     
     /**
@@ -78,21 +82,19 @@ public class MensajeriaResource {
      * @param mensaje
      * @return
      */
-    @POST
+    @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes({MediaType.APPLICATION_JSON})
     @Path("enviarmensaje")
-    public Response enviarMensaje(
-            @QueryParam("token") String token, 
-            @QueryParam("recipienteId") int recipienteId, 
-            @QueryParam("mensaje") String mensaje
-    ) {
+    public Response enviarMensaje(@QueryParam("token") String token, @QueryParam("recipienteId") int recipienteId, @QueryParam("contenido") String mensaje) {
+        System.out.println(mensaje);
+        System.out.println(recipienteId);
         ServicioMensajeria serv = ServicioMensajeria.Instance();
-        ConexionControlEscolar con = ConexionControlEscolar.Instance();
+        Conexion.UsuarioResource_JerseyClient con = new Conexion.UsuarioResource_JerseyClient();
         
         int remitenteId = -1;
         try {
-            remitenteId = con.obtenerIdDesdeToken(token);
+            remitenteId = con.obtenerIdUsuario(Integer.class, token);
         } catch (Exception ex) {
             Logger.getLogger(MensajeriaResource.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -104,4 +106,5 @@ public class MensajeriaResource {
         
         return Response.ok(mensaje, MediaType.TEXT_PLAIN).build();
     }
+
 }

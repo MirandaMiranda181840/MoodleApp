@@ -12,17 +12,27 @@ package objectosNegocio;
 public class Asignacion {
     private int id, idcurso, numSubidas;
     private String nombre, introduccion;
+    private int fechaEntrega;
     
    public Asignacion(){
        
    }
-   public Asignacion(int id, int idcurso, String nombre, String introduccion, int numSubidas){
+   public Asignacion(int id, int idcurso, String nombre, String introduccion, int numSubidas, int fechaEntrega){
        this.id=id;
        this.idcurso=idcurso;
        this.nombre=nombre;
        this.introduccion=introduccion;
        this.numSubidas=numSubidas;
+       this.fechaEntrega = fechaEntrega;
    }
+
+    public int getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(int fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
 
     public int getId() {
         return id;

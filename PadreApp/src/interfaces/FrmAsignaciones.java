@@ -6,7 +6,10 @@
 package interfaces;
 
 import conexion.RESTConexion;
+import interfaces.paneles.PanelAsignacion;
+import java.awt.Dimension;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import objectosNegocio.Asignacion;
 import objectosNegocio.ParentUser;
 
@@ -20,25 +23,45 @@ public class FrmAsignaciones extends javax.swing.JFrame {
      * Creates new form FrmCursosView
      */
     ParentUser parentUser;
-    RESTConexion.CalificacionesResource_Client conexion;
+    RESTConexion.CalificacionesResource_JerseyClient conexion;
      ArrayList<Asignacion> asignacionesCurso;
-    public FrmAsignaciones(ParentUser parentUser) {
+     private int cursoId;
+    public FrmAsignaciones(ParentUser parentUser, int cursoId) {
         initComponents();
-        conexion=new RESTConexion.CalificacionesResource_Client();
+        this.cursoId=cursoId;
+        conexion=new RESTConexion.CalificacionesResource_JerseyClient();
         this.parentUser=parentUser;
         this.asignacionesCurso=new ArrayList <Asignacion>();
         llenarCursos();
         setLocationRelativeTo(null);
     }
      private void llenarCursos(){
-         //puse id del curso 2 por mientras
-        Asignacion[]asignaciones=conexion.getAsignacionesCurso(Asignacion[].class, 2);
+         int contadorPanel=0;
+        int contadorPanelAumento=82;
+        
+        this.panelAsignaciones.setSize(325, 500);
+
+        //puse id del curso 2 por mientras
+        Asignacion[]asignaciones=conexion.getAsignaciones(Asignacion[].class, this.cursoId, parentUser.getToken());
+        
+        
         for(Asignacion asignacion: asignaciones){
             this.asignacionesCurso.add(asignacion);
         }
         //IMPRESION DE PRUEBA
-       this.jTextArea1.setText(asignacionesCurso.toString());
+        if(asignacionesCurso.isEmpty()){
+            JOptionPane.showMessageDialog(this, "No hay asignaciones en este curso", "No hay asignaciones en este curso", JOptionPane.INFORMATION_MESSAGE);
+        }
+       for (int i = 0; i < asignacionesCurso.size(); i++) {
+            PanelAsignacion panel= new PanelAsignacion(this.parentUser,asignacionesCurso.get(i).getNombre(),
+            this.cursoId, asignacionesCurso.get(i).getId(), asignacionesCurso.get(i));
+            panel.setSize(new Dimension(278, 49));
+            panelAsignaciones.add(panel).setBounds(0, contadorPanel, 325, 56);
+            contadorPanel=contadorPanel+(contadorPanelAumento-10);
+        }
          System.out.println(asignacionesCurso.toString());
+         
+         
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,11 +83,7 @@ public class FrmAsignaciones extends javax.swing.JFrame {
         lblLogo3 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        btnAsig1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        panelAsignaciones = new javax.swing.JPanel();
 
         jPanel11.setBackground(new java.awt.Color(252, 189, 131));
 
@@ -114,7 +133,7 @@ public class FrmAsignaciones extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Curso: Historia");
+        jLabel2.setText("Curso: ");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -161,43 +180,19 @@ public class FrmAsignaciones extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Asignaciones");
 
-        jPanel10.setBackground(new java.awt.Color(252, 189, 131));
+        panelAsignaciones.setBackground(new java.awt.Color(247, 125, 19));
+        panelAsignaciones.setPreferredSize(new java.awt.Dimension(325, 356));
 
-        jLabel6.setFont(new java.awt.Font("Montserrat", 0, 20)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Asig1");
-
-        btnAsig1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/adelantechico.png"))); // NOI18N
-        btnAsig1.setBorder(null);
-        btnAsig1.setContentAreaFilled(false);
-        btnAsig1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAsig1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAsig1))
+        javax.swing.GroupLayout panelAsignacionesLayout = new javax.swing.GroupLayout(panelAsignaciones);
+        panelAsignaciones.setLayout(panelAsignacionesLayout);
+        panelAsignacionesLayout.setHorizontalGroup(
+            panelAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnAsig1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
-                .addGap(0, 2, Short.MAX_VALUE))
+        panelAsignacionesLayout.setVerticalGroup(
+            panelAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 356, Short.MAX_VALUE)
         );
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -205,18 +200,13 @@ public class FrmAsignaciones extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                        .addComponent(lblLogo3))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jScrollPane1)))
+                .addContainerGap()
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addComponent(lblLogo3)
                 .addContainerGap())
+            .addComponent(panelAsignaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,11 +214,9 @@ public class FrmAsignaciones extends javax.swing.JFrame {
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelAsignaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblLogo3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -253,13 +241,8 @@ public class FrmAsignaciones extends javax.swing.JFrame {
         frmCursos login = new frmCursos(parentUser);
         login.setVisible(true);
         this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void btnAsig1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsig1ActionPerformed
-        frmAsignacion asignacion = new frmAsignacion(parentUser);
-        asignacion.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_btnAsig1ActionPerformed
 
     private void btnCurso5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCurso5ActionPerformed
         // TODO add your handling code here:
@@ -267,21 +250,17 @@ public class FrmAsignaciones extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAsig1;
     private javax.swing.JButton btnCurso5;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblLogo3;
     private javax.swing.JLabel lblMenu1;
+    private javax.swing.JPanel panelAsignaciones;
     // End of variables declaration//GEN-END:variables
 }

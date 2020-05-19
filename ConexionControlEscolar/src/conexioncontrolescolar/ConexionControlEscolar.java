@@ -76,8 +76,8 @@ public class ConexionControlEscolar {
     
     public void enviarMensaje(int remitenteId, int recipienteId, String contenido){
         try {
-            String sql = "INSERT INTO mensajes (remitenteId, recipienteId, contenido) VALUES ("+remitenteId+","+recipienteId+","+contenido+")";
-            st.executeQuery(sql);
+            String sql = "INSERT INTO mensajes (remitenteId, recipienteId, contenido) VALUES ("+remitenteId+","+recipienteId+",'"+contenido+"')";
+            st.executeUpdate(sql);
         } catch (SQLException ex) {
             Logger.getLogger(ConexionControlEscolar.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -96,8 +96,18 @@ public class ConexionControlEscolar {
             md2.update((token+salt).getBytes());
             String tokenHash = DatatypeConverter.printHexBinary(md2.digest()).toUpperCase();
             
-            String sql = "INSERT INTO usuarios (nombre, apellido, email, passwordHash, tokenHash, codigoAlumno) VALUES ("+ nombre +"," + apellido + "," + email + "," + passwordHash + "," + tokenHash + "," + codigoAlumno + ")";
-            st.executeQuery(sql);
+            //buscar
+            String sql = "SELECT * FROM usuarios WHERE email='"+email+"'";
+            ResultSet rs  = st.executeQuery(sql);
+            boolean encontrado = false;
+            while(rs.next())
+                encontrado = true;
+
+            if(encontrado)
+                throw new Exception("Este usuario ya existe.");
+            
+            sql = "INSERT INTO usuarios (nombre, apellido, email, passwordHash, tokenHash, codigoAlumno) VALUES ('"+ nombre +"','" + apellido + "','" + email + "','" + passwordHash + "','" + tokenHash + "','" + codigoAlumno + "')";
+            st.executeUpdate(sql);
             
             return token;
         } catch (SQLException ex) {
@@ -119,7 +129,7 @@ public class ConexionControlEscolar {
             String tokenHash = DatatypeConverter.printHexBinary(md2.digest()).toUpperCase();
             
             //buscar
-            String sql = "SELECT * FROM usuarios WHERE email="+email+" AND passwordHash="+passwordHash;
+            String sql = "SELECT * FROM usuarios WHERE email='"+email+"' AND passwordHash='"+passwordHash+"'";
             ResultSet rs  = st.executeQuery(sql);
             boolean encontrado = false;
             while(rs.next())
@@ -129,8 +139,8 @@ public class ConexionControlEscolar {
                 throw new Exception("Usuario y/o contraseña incorrectos");
 
             //loguear
-            sql = "UPDATE usuarios SET tokenHash="+tokenHash+" WHERE email="+email+" AND passwordHash="+passwordHash;
-            st.executeQuery(sql);
+            sql = "UPDATE usuarios SET tokenHash='"+tokenHash+"' WHERE email="+email+" AND passwordHash="+passwordHash;
+            st.executeUpdate(sql);
             
             return token;
         } catch (Exception e) {
@@ -146,7 +156,7 @@ public class ConexionControlEscolar {
         String hash = DatatypeConverter.printHexBinary(md.digest()).toUpperCase();
 
         try {
-            String sql = "SELECT id FROM usuarios WHERE tokenHash="+hash;
+            String sql = "SELECT id FROM usuarios WHERE tokenHash='"+hash+"'";
             ResultSet rs = st.executeQuery(sql);
             while(rs.next())
                 return rs.getInt("id");

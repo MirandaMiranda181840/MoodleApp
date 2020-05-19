@@ -6,7 +6,10 @@
 package interfaces;
 
 import conexion.RESTConexion;
+import interfaces.paneles.PanelCurso;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import objectosNegocio.Curso;
 import objectosNegocio.ParentUser;
 
@@ -20,25 +23,38 @@ public class frmCursos extends javax.swing.JFrame {
      * Creates new form frmCursos
      */
     ParentUser parentUser;
-     RESTConexion.CalificacionesResource_Client conexion;
+  
+     RESTConexion.CalificacionesResource_JerseyClient conexion;
      ArrayList<Curso> cursosAlumno;
     public frmCursos(ParentUser parentUser) {
         initComponents();
         this.parentUser=parentUser;
         this.cursosAlumno=new ArrayList <Curso>();
-        conexion=new RESTConexion.CalificacionesResource_Client();
+        conexion=new RESTConexion.CalificacionesResource_JerseyClient();
         llenarCursos();
         setLocationRelativeTo(null);
     }
     
 
     private void llenarCursos(){
-        Curso[]cursos=conexion.getCursosAlumno(Curso[].class, parentUser.getChildID());
+        int contadorPanel=0;
+        int contadorPanelAumento=95;
+        
+        Curso[] cursos = conexion.getCursos(Curso[].class, parentUser.getToken());
+        
         for(Curso curso: cursos){
             this.cursosAlumno.add(curso);
         }
         //IMPRESION DE PRUEBA
-        this.jTextArea1.setText(cursosAlumno.toString());
+         if(cursosAlumno.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Tu hijo no esta inscrito en ningún curso", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        for (int i = 0; i < cursosAlumno.size(); i++) {
+            PanelCurso panel= new PanelCurso(parentUser,cursosAlumno.get(i).getId(),cursosAlumno.get(i).getNombre());
+            panelCursos.add(panel).setBounds(0, contadorPanel, 325, 68);
+            contadorPanel=contadorPanel+(contadorPanelAumento-20);
+        }
+       
         System.out.println(cursosAlumno.toString());
     }
     /**
@@ -57,11 +73,7 @@ public class frmCursos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         lblLogo3 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        btnCurso1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        panelCursos = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,67 +131,40 @@ public class frmCursos extends javax.swing.JFrame {
             }
         });
 
-        jPanel4.setBackground(new java.awt.Color(252, 189, 131));
+        panelCursos.setBackground(new java.awt.Color(247, 125, 19));
+        panelCursos.setPreferredSize(new java.awt.Dimension(325, 393));
 
-        jLabel3.setFont(new java.awt.Font("Montserrat", 0, 30)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Historia");
-
-        btnCurso1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/adelante.png"))); // NOI18N
-        btnCurso1.setBorder(null);
-        btnCurso1.setContentAreaFilled(false);
-        btnCurso1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCurso1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
-                .addComponent(btnCurso1))
+        javax.swing.GroupLayout panelCursosLayout = new javax.swing.GroupLayout(panelCursos);
+        panelCursos.setLayout(panelCursosLayout);
+        panelCursosLayout.setHorizontalGroup(
+            panelCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 328, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnCurso1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        panelCursosLayout.setVerticalGroup(
+            panelCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 393, Short.MAX_VALUE)
         );
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+            .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblLogo3)
                 .addContainerGap())
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(panelCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelCursos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblLogo3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -204,29 +189,18 @@ public class frmCursos extends javax.swing.JFrame {
         FrmPrincipal login = new FrmPrincipal(parentUser);
         login.setVisible(true);
         this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void btnCurso1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCurso1ActionPerformed
-           
-        FrmAsignaciones curso = new FrmAsignaciones(parentUser);
-        curso.setVisible(true);
-        this.setVisible(false);
-        
-    }//GEN-LAST:event_btnCurso1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCurso1;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblLogo3;
     private javax.swing.JLabel lblMenu1;
+    private javax.swing.JPanel panelCursos;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,17 @@
  */
 package interfaces;
 
+import conexion.RESTConexion;
+import conexion.RESTConexion.MensajeriaResource_JerseyClient;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import objectosNegocio.Curso;
+import objectosNegocio.DatosPadre;
+import objectosNegocio.DatosProfesor;
+import objectosNegocio.Mensaje;
 import objectosNegocio.ParentUser;
 
 /**
@@ -17,12 +28,81 @@ public class frmMensajes extends javax.swing.JFrame {
      * Creates new form frmMensajes
      */
     ParentUser parentUser;
+    DatosProfesor[] usuarios = new DatosProfesor[100];
+    int receptorId = -1;
     public frmMensajes(ParentUser parentUser) {
         initComponents();
         this.parentUser=parentUser;
         setLocationRelativeTo(null);
+        cargarUsuarios();
+        
+        new Thread()
+        {
+            public void run() { //cambiar despues si hay tiempo por cola rabbit o no se
+                while(true){
+                    System.out.println("refrescando mensajes");
+                    obtenerMensajes();
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(frmMensajes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }.start();
     }
 
+    public void cargarUsuarios(){
+        DefaultListModel dlm = new DefaultListModel();
+        
+        Curso[] cursos = new RESTConexion.CalificacionesResource_JerseyClient().getCursos(Curso[].class, parentUser.getToken());
+        int contador = 0;
+        for (Curso curso : cursos) {
+            try{
+                DatosProfesor prof = new RESTConexion.UsuarioResource_JerseyClient().obtenerProfesor(DatosProfesor.class, curso.getId(), parentUser.getToken());
+                if(prof!=null){
+                    usuarios[contador] = prof;
+                    dlm.addElement(prof.getFullname() + " - " + curso.getNombre());
+                    contador++;
+                }
+            }catch(Exception e){
+                //no se encontro profesor para tal curso
+            }
+        }
+        
+        jList1.setModel(dlm);
+    }
+    
+    public void obtenerMensajes(){
+        if(receptorId >= 0){
+            //obtener lista de mensajes
+            RESTConexion.MensajeriaResource_JerseyClient con = new RESTConexion.MensajeriaResource_JerseyClient();
+            Mensaje[] mensajes = con.getMensajesRelevantes(Mensaje[].class, parentUser.getToken());
+            txtMensa8.setText("");
+            for (Mensaje mensaje : mensajes) {
+                if(mensaje.getReceptorId() != receptorId) {
+                    txtMensa8.setText(txtMensa8.getText() + "[PROFESOR:] " + mensaje.getContenido() + "\n");
+                }
+                else{
+                    txtMensa8.setText(txtMensa8.getText() + "[USTED:] " + mensaje.getContenido() + "\n");
+                }
+            }
+        }
+    }
+    
+    public void enviarMensaje(String txt){
+        RESTConexion.MensajeriaResource_JerseyClient con = new RESTConexion.MensajeriaResource_JerseyClient();
+        System.out.println("enviando mensaje " + txt + " | " + receptorId + " | ");
+        String mensajeEnviado = con.enviarMensaje(String.class, txt, ""+receptorId, parentUser.getToken());
+        if(!mensajeEnviado.isEmpty()){
+            System.out.println("enviado con exito");
+            txtMensa8.setText(txtMensa8.getText() + "[USTED:] " + txt + "\n");
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Ocurrio un error al intentar enviar el mensaje.", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,9 +122,13 @@ public class frmMensajes extends javax.swing.JFrame {
         lblLogo3 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        txtMensa8 = new javax.swing.JTextField();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtMensa8 = new javax.swing.JTextArea();
 
         txtMensa4.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         txtMensa4.setText("Mensaje 2");
@@ -66,7 +150,7 @@ public class frmMensajes extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Cursos de mi hijo");
+        jLabel2.setText("Chat");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -110,9 +194,6 @@ public class frmMensajes extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(252, 189, 131));
 
-        txtMensa8.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        txtMensa8.setText("CONVERSACIÓN");
-
         jTextField1.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         jTextField1.setText("Texto para enviar");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -129,25 +210,48 @@ public class frmMensajes extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setViewportView(jList1);
+
+        jButton2.setText("Seleccionar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        txtMensa8.setColumns(20);
+        txtMensa8.setRows(5);
+        jScrollPane2.setViewportView(txtMensa8);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtMensa8)
-                .addContainerGap())
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addComponent(jTextField1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(txtMensa8, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jButton2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)))
@@ -207,23 +311,42 @@ public class frmMensajes extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        //enviar
+        if(receptorId >= 0){
+            enviarMensaje(jTextField1.getText());
+        }else{
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario con quien hablar", "Error", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //seleccionar
+        int i = jList1.getSelectedIndex();
+        if(i>=0){
+            receptorId = usuarios[i].getId();
+            obtenerMensajes();
+        }else{
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario con quien hablar", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblLogo3;
     private javax.swing.JLabel lblMenu1;
     private javax.swing.JTextField txtMensa4;
     private javax.swing.JTextField txtMensa6;
-    private javax.swing.JTextField txtMensa8;
+    private javax.swing.JTextArea txtMensa8;
     // End of variables declaration//GEN-END:variables
 }
