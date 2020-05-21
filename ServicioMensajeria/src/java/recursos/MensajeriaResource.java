@@ -45,13 +45,14 @@ public class MensajeriaResource {
     /**
      * Retrieves representation of an instance of recursos.MensajeriaResource
      * @param token
+     * @param receptorId
      * @return an instance of objectosNegocio.Mensaje
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes({MediaType.APPLICATION_JSON})
     @Path("obtenermensajes")
-    public Response getMensajesRelevantes(@QueryParam("token") String token) {
+    public Response getMensajesRelevantes(@QueryParam("token") String token, @QueryParam("receptorId") int receptorId) {
         ServicioMensajeria serv = ServicioMensajeria.Instance();
         Conexion.UsuarioResource_JerseyClient con = new Conexion.UsuarioResource_JerseyClient();
         
@@ -65,7 +66,7 @@ public class MensajeriaResource {
         if(userId == -1) 
             return Response.serverError().build();
         
-        Respuesta mensajes = serv.getMensajesRelevantes(userId);
+        Respuesta mensajes = serv.getMensajesRelevantes(userId, receptorId);
         
         ArrayList<Mensaje> list = (ArrayList<Mensaje>) mensajes.getRespuesta();
         

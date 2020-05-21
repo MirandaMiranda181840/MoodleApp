@@ -26,14 +26,15 @@ public class pruebas2 {
     public static void main(String[] args) {
         // TODO code application logic here
         String token = "6a184382969c536d063d0f909581ec36";
-        DatosPadre[] res = new RESTConexion.UsuarioResource_JerseyClient().obtenerPadres(DatosPadre[].class, token);
+        /*
+        DatosPadre[] res = RESTConexion.Instance().obtenerPadres(DatosPadre[].class, token);
         for (DatosPadre re : res) {
             System.out.println(re.toString());
         }
-        
+        */
         int cursoId = 4;
         
-        DatosProfesor res2 = new RESTConexion.UsuarioResource_JerseyClient().obtenerProfesor(DatosProfesor.class, cursoId, token);
+        DatosProfesor res2 = RESTConexion.Instance().obtenerProfesor(DatosProfesor.class, ""+cursoId, token);
         System.out.println(res2.toString());
     }
     

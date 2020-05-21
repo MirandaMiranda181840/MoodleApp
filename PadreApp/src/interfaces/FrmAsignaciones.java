@@ -23,13 +23,13 @@ public class FrmAsignaciones extends javax.swing.JFrame {
      * Creates new form FrmCursosView
      */
     ParentUser parentUser;
-    RESTConexion.CalificacionesResource_JerseyClient conexion;
+    RESTConexion.GatewayResource_JerseyClient conexion;
      ArrayList<Asignacion> asignacionesCurso;
      private int cursoId;
     public FrmAsignaciones(ParentUser parentUser, int cursoId) {
         initComponents();
         this.cursoId=cursoId;
-        conexion=new RESTConexion.CalificacionesResource_JerseyClient();
+        conexion=RESTConexion.Instance();
         this.parentUser=parentUser;
         this.asignacionesCurso=new ArrayList <Asignacion>();
         llenarCursos();
@@ -42,7 +42,7 @@ public class FrmAsignaciones extends javax.swing.JFrame {
         this.panelAsignaciones.setSize(325, 500);
 
         //puse id del curso 2 por mientras
-        Asignacion[]asignaciones=conexion.getAsignaciones(Asignacion[].class, this.cursoId, parentUser.getToken());
+        Asignacion[]asignaciones=conexion.getAsignaciones(Asignacion[].class, ""+this.cursoId, parentUser.getToken());
         
         
         for(Asignacion asignacion: asignaciones){

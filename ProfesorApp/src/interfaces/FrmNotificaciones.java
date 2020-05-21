@@ -33,13 +33,14 @@ public class FrmNotificaciones extends javax.swing.JFrame {
         Alarma[] res = conexionAlarmas.getAlarmas(Alarma[].class, parentUser.getToken());
         jButton3.setVisible(false);
         jLabel9.setVisible(true);
+        jTextArea1.setText("");
         //jTextArea1.setText("No se encontraron alarmas para\n sobre tu hijo");
         for (Alarma re : res) {
             if(re.getPrioridad() > 0){
                 jButton3.setVisible(true); //icono de peligro
             }
             String[] txt = re.getMensaje().split("/");
-            jTextArea1.setText(txt[0]);
+            jTextArea1.setText(jTextArea1.getText() + txt[0] + "\n");
             jLabel9.setText(txt[1]);
         }
     }
@@ -311,10 +312,10 @@ public class FrmNotificaciones extends javax.swing.JFrame {
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(new java.awt.Color(252, 189, 131));
         jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 20)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
         jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(3);
+        jTextArea1.setRows(4);
         jTextArea1.setBorder(null);
         jScrollPane1.setViewportView(jTextArea1);
 
@@ -376,7 +377,7 @@ public class FrmNotificaciones extends javax.swing.JFrame {
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblLogo3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING))

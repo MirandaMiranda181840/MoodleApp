@@ -91,7 +91,7 @@ public class UsuarioResource {
         
         Respuesta res = serv.registrarUsuario(email, password, nombre, apellido); //token
         if(!res.getMensaje().isEmpty())
-            return Response.status(500, res.getMensaje()).build();
+            return Response.status(500/*, res.getMensaje()*/).build();
         
         return Response.ok(res.getRespuesta(), MediaType.TEXT_PLAIN).build();
     }
@@ -105,7 +105,7 @@ public class UsuarioResource {
         
         Respuesta res = serv.autenticarUsuario(email, password); //token
         if(!res.getMensaje().isEmpty())
-            return Response.status(500, res.getMensaje()).build();
+            return Response.status(500/*, res.getMensaje()*/).build();
         
         return Response.ok(res.getRespuesta(), MediaType.TEXT_PLAIN).build();
     }
@@ -119,7 +119,7 @@ public class UsuarioResource {
         
         Respuesta res = serv.getNombreUsuario(token, email);
         if(!res.getMensaje().isEmpty())
-            return Response.status(500, res.getMensaje()).build();
+            return Response.status(500/*, res.getMensaje()*/).build();
         
         String fullname = (String) res.getRespuesta();
         System.out.println("NOMBRE: " + fullname);
@@ -136,7 +136,7 @@ public class UsuarioResource {
         
         Respuesta res = serv.getIdUsuario(token);
         if(!res.getMensaje().isEmpty())
-            return Response.status(500, res.getMensaje()).build();
+            return Response.status(500/*, res.getMensaje()*/).build();
         
         int id = (int) res.getRespuesta();
         System.out.println("ID: " + id);
@@ -153,7 +153,7 @@ public class UsuarioResource {
         
         Respuesta res = serv.getHijo(token);
         if(!res.getMensaje().isEmpty())
-            return Response.status(500, res.getMensaje()).build();
+            return Response.status(500/*, res.getMensaje()*/).build();
         
         return Response.ok(res.getRespuesta(), MediaType.APPLICATION_JSON).build();
     }
@@ -166,8 +166,9 @@ public class UsuarioResource {
         ServicioUsuarios serv = ServicioUsuarios.Instance();
         
         Respuesta res = serv.getProfesor(token, cursoId);
+        System.out.println(res.getMensaje());
         if(!res.getMensaje().isEmpty())
-            return Response.status(500, res.getMensaje()).build();
+            return Response.status(500/*, res.getMensaje()*/).build();
         
         return Response.ok((DatosProfesor) res.getRespuesta(), MediaType.APPLICATION_JSON).build();
     }
@@ -181,7 +182,7 @@ public class UsuarioResource {
         
         Respuesta res = serv.getPadres(token);
         if(!res.getMensaje().isEmpty())
-            return Response.status(500, res.getMensaje()).build();
+            return Response.status(500/*, res.getMensaje()*/).build();
         
         return Response.ok((DatosPadre[]) res.getRespuesta(), MediaType.APPLICATION_JSON).build();
     }

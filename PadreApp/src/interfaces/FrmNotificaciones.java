@@ -19,18 +19,18 @@ public class FrmNotificaciones extends javax.swing.JFrame {
     /**
      * Creates new form frmCalificaciones
      */
-    RESTConexion.AlarmaResource_JerseyClient conexionAlarmas;
+    RESTConexion.GatewayResource_JerseyClient conexion;
     ParentUser parentUser;
     public FrmNotificaciones(ParentUser parentUser) {
         initComponents();
         this.parentUser=parentUser;
         setLocationRelativeTo(null);
-        conexionAlarmas=new RESTConexion.AlarmaResource_JerseyClient();
+        conexion=RESTConexion.Instance();
         cargarNotificaciones();
     }
     
     private void cargarNotificaciones(){
-        Alarma[] res = conexionAlarmas.getAlarmas(Alarma[].class, parentUser.getToken());
+        Alarma[] res = conexion.getAlarmas(Alarma[].class, parentUser.getToken());
         jButton3.setVisible(false);
         jLabel9.setVisible(true);
         //jTextArea1.setText("No se encontraron alarmas para\n sobre tu hijo");

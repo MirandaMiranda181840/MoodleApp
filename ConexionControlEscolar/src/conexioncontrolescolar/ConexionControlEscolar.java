@@ -56,16 +56,18 @@ public class ConexionControlEscolar {
             System.out.println("Not connected." + e.getMessage());
         }  
     }
-    public ArrayList<Mensaje> obtenerMensajesRelevantes(int userId){
+    public ArrayList<Mensaje> obtenerMensajesRelevantes(int userId, int receptorId){
        ArrayList <Mensaje> mensajes = new ArrayList <Mensaje>();
      
         try {
-              String sql = "SELECT * FROM mensajes WHERE remitenteId="+userId+ " OR recipienteId="+userId;
+              String sql = "SELECT * FROM mensajes WHERE (remitenteId="+userId+ " AND recipienteId="+receptorId+") OR (remitenteId="+receptorId+ " AND recipienteId="+userId+")";
               ResultSet rs  = st.executeQuery(sql);
               while(rs.next()){
-                  mensajes.add(new Mensaje(
+                  Mensaje msj = new Mensaje(
                           rs.getInt(2),rs.getInt(3),
-                          rs.getString(4)));
+                          rs.getString(4));
+                  mensajes.add(msj);
+                  //System.out.println(msj.toString());
             }
             
           } catch (SQLException ex) {

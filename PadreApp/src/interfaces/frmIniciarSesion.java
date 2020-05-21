@@ -210,7 +210,7 @@ public class frmIniciarSesion extends javax.swing.JFrame {
             
             if(txtCorreo.getText().matches("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")){
                 try{
-                    String token = new RESTConexion.UsuarioResource_JerseyClient().loguearPadre(
+                    String token = RESTConexion.Instance().loguearUsuario(
                         String.class, 
                         txtContrasena.getText(),
                         txtCorreo.getText()
@@ -218,7 +218,7 @@ public class frmIniciarSesion extends javax.swing.JFrame {
 
                     if(token != null){
                         System.out.println(token);
-                        String fullname = new RESTConexion.UsuarioResource_JerseyClient().obtenerNombreUsuario(String.class, txtCorreo.getText(), token);
+                        String fullname = RESTConexion.Instance().obtenerNombreUsuario(String.class, txtCorreo.getText(), token);
                         System.out.println(fullname);
                         ArrayList<String> list = new ArrayList<String>(Arrays.asList(fullname.split(" ")));
                         //AQUÍ VA EL CÓDIGO PARA REGISTRARLO

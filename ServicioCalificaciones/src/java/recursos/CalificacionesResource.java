@@ -40,7 +40,7 @@ public class CalificacionesResource {
      */
     public CalificacionesResource() {
     }
-
+    /*
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes({MediaType.APPLICATION_JSON})
     @GET
@@ -68,7 +68,7 @@ public class CalificacionesResource {
 
         return Response.ok((Asignacion[]) asigs.getRespuesta(), MediaType.APPLICATION_JSON).build();
     }
-    
+    */
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes({MediaType.APPLICATION_JSON})
     @GET
@@ -81,5 +81,19 @@ public class CalificacionesResource {
         Respuesta cali = servicio.getCalificacionAsignacion(hijoId, cursoId, asignacionId);
 
         return Response.ok((DatosAsignacion) cali.getRespuesta(), MediaType.APPLICATION_JSON).build();
+    }
+    
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes({MediaType.APPLICATION_JSON})
+    @GET
+    @Path("detallesAsignacionProfesor")
+    public Response getCalificacionesProfesor(@QueryParam("token")String token, @QueryParam("cursoId") int cursoId, @QueryParam("asignacionId") int asignacionId) {
+        ServicioCalificaciones servicio= ServicioCalificaciones.Instance();
+
+        int profesorId = new Conexion.UsuarioResource_JerseyClient().obtenerIdUsuario(Integer.class, token);
+
+        Respuesta cali = servicio.getCalificacionAsignacionProfesor(profesorId, cursoId, asignacionId, token);
+
+        return Response.ok((DatosAsignacion[]) cali.getRespuesta(), MediaType.APPLICATION_JSON).build();
     }
 }

@@ -12,6 +12,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  *
@@ -27,20 +33,42 @@ public class ConexionMoodle {
         }else if(permiso == 1) {
             this.token = "6ea014ed3c695a1168c2b817d7317cd6"; //token creacion de usuarios
         }
-        this.dominio = "http://localhost/moodle";
+        this.dominio = "https://localhost/moodle";
     }
    
     public ConexionMoodle(String token) {
         this.token = token;
-        this.dominio = "http://localhost/moodle";
+        this.dominio = "https://localhost/moodle";
     }
     
     public String Llamar(String funcion, String parametros) throws IOException {
+        TrustManager[] trust = new TrustManager[]
+        {
+          new X509TrustManager()
+           {
+             public java.security.cert.X509Certificate[] getAcceptedIssuers()  { return null; }
+             public void checkClientTrusted( java.security.cert.X509Certificate[] certs, String authType)  {}
+             public void checkServerTrusted( java.security.cert.X509Certificate[] certs, String authType)  {}
+           }
+          };
+       try
+         {
+           SSLContext sc = SSLContext.getInstance("SSL"); // "TLS" "SSL"
+           sc.init(null, trust, null);
+           HttpsURLConnection.setDefaultSSLSocketFactory( sc.getSocketFactory());
+           HttpsURLConnection.setDefaultHostnameVerifier( 
+            new HostnameVerifier() 
+             {
+               public boolean verify( String hostname, SSLSession session) { return true; }
+             } );
+         }
+        catch(Exception e){}
+           
         String formato = "&moodlewsrestformat=json";
 
         String serverurl = this.dominio + "/webservice/rest/server.php" + "?wstoken=" + token + "&wsfunction=" + funcion + formato;
 
-        HttpURLConnection con = (HttpURLConnection) new URL(serverurl).openConnection();
+        HttpsURLConnection con = (HttpsURLConnection) new URL(serverurl).openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         con.setRequestProperty("Content-Language", "en-US");
@@ -67,11 +95,33 @@ public class ConexionMoodle {
     }
     
     public String AutenticarUsuario(String username, String password) throws IOException {
+        TrustManager[] trust = new TrustManager[]
+        {
+          new X509TrustManager()
+           {
+             public java.security.cert.X509Certificate[] getAcceptedIssuers()  { return null; }
+             public void checkClientTrusted( java.security.cert.X509Certificate[] certs, String authType)  {}
+             public void checkServerTrusted( java.security.cert.X509Certificate[] certs, String authType)  {}
+           }
+          };
+       try
+         {
+           SSLContext sc = SSLContext.getInstance("SSL"); // "TLS" "SSL"
+           sc.init(null, trust, null);
+           HttpsURLConnection.setDefaultSSLSocketFactory( sc.getSocketFactory());
+           HttpsURLConnection.setDefaultHostnameVerifier( 
+            new HostnameVerifier() 
+             {
+               public boolean verify( String hostname, SSLSession session) { return true; }
+             } );
+         }
+        catch(Exception e){}
+       
         String formato = "&moodlewsrestformat=json";
 
         String serverurl = this.dominio + "/login/token.php" + "?username=" + username + "&password=" + password + "&service=moodle_mobile_app";
 
-        HttpURLConnection con = (HttpURLConnection) new URL(serverurl).openConnection();
+        HttpsURLConnection con = (HttpsURLConnection) new URL(serverurl).openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         con.setRequestProperty("Content-Language", "en-US");

@@ -21,9 +21,11 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ServicioUsuarios/webresources";
+        private static final String BASE_URI = "https://localhost:8443/ServicioUsuarios/webresources";
 
         public UsuarioResource_JerseyClient() {
+            System.setProperty("javax.net.ssl.trustStore", "C:\\certs\\moodle\\keystore.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "moodle");
             client = javax.ws.rs.client.ClientBuilder.newClient();
             webTarget = client.target(BASE_URI).path("usuario");
         }
@@ -107,30 +109,13 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ServicioCalificaciones/webresources";
+        private static final String BASE_URI = "https://localhost:8443/ServicioCalificaciones/webresources";
 
         public CalificacionesResource_JerseyClient() {
+            System.setProperty("javax.net.ssl.trustStore", "C:\\certs\\moodle\\keystore.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "moodle");
             client = javax.ws.rs.client.ClientBuilder.newClient();
             webTarget = client.target(BASE_URI).path("calificaciones");
-        }
-
-        public <T> T getCursos(Class<T> responseType, String token) throws ClientErrorException {
-            WebTarget resource = webTarget;
-            if (token != null) {
-                resource = resource.queryParam("token", token);
-            }
-            resource = resource.path("cursos");
-            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-        }
-
-        public <T> T getAsignaciones(Class<T> responseType, int cursoId, String token) throws ClientErrorException {
-            WebTarget resource = webTarget;
-            resource = resource.queryParam("cursoId", cursoId);
-            if (token != null) {
-                resource = resource.queryParam("token", token);
-            }
-            resource = resource.path("asignaciones");
-            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
 
         public <T> T getCalificaciones(Class<T> responseType, int asignacionId, int cursoId, String token) throws ClientErrorException {
@@ -153,9 +138,11 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ServicioAlarma/webresources";
+        private static final String BASE_URI = "https://localhost:8443/ServicioAlarma/webresources";
 
         public AlarmaResource_JerseyClient() {
+            System.setProperty("javax.net.ssl.trustStore", "C:\\certs\\moodle\\keystore.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "moodle");
             client = javax.ws.rs.client.ClientBuilder.newClient();
             webTarget = client.target(BASE_URI).path("alarma");
         }
@@ -178,9 +165,11 @@ public class RESTConexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ServicioMensajeria/webresources";
+        private static final String BASE_URI = "https://localhost:8443/ServicioMensajeria/webresources";
 
         public MensajeriaResource_JerseyClient() {
+            System.setProperty("javax.net.ssl.trustStore", "C:\\certs\\moodle\\keystore.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "moodle");
             client = javax.ws.rs.client.ClientBuilder.newClient();
             webTarget = client.target(BASE_URI).path("mensajeria");
         }
@@ -200,12 +189,52 @@ public class RESTConexion {
             return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
         }
 
-        public <T> T getMensajesRelevantes(Class<T> responseType, String token) throws ClientErrorException {
+        public <T> T getMensajesRelevantes(Class<T> responseType, String receptorId, String token) throws ClientErrorException {
             WebTarget resource = webTarget;
+            resource = resource.queryParam("receptorId", receptorId);
             if (token != null) {
                 resource = resource.queryParam("token", token);
             }
             resource = resource.path("obtenermensajes");
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
+
+        public void close() {
+            client.close();
+        }
+    }
+
+    public static class TareasResource_JerseyClient {
+
+        private WebTarget webTarget;
+        private Client client;
+        private static final String BASE_URI = "https://localhost:8443/ServicioTareas/webresources";
+
+        public TareasResource_JerseyClient() {
+            System.setProperty("javax.net.ssl.trustStore", "C:\\certs\\moodle\\keystore.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "moodle");
+            client = javax.ws.rs.client.ClientBuilder.newClient();
+            webTarget = client.target(BASE_URI).path("tareas");
+        }
+
+        public <T> T getCursos(Class<T> responseType, String token) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (token != null) {
+                resource = resource.queryParam("token", token);
+            }
+            resource = resource.path("cursos");
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
+
+        public <T> T getAsignaciones(Class<T> responseType, String cursoId, String token) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (cursoId != null) {
+                resource = resource.queryParam("cursoId", cursoId);
+            }
+            if (token != null) {
+                resource = resource.queryParam("token", token);
+            }
+            resource = resource.path("asignaciones");
             return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
 

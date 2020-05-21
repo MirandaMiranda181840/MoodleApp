@@ -6,7 +6,6 @@
 package interfaces;
 
 import conexion.RESTConexion;
-import conexion.RESTConexion.MensajeriaResource_JerseyClient;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -30,6 +29,7 @@ public class frmMensajes extends javax.swing.JFrame {
     ParentUser parentUser;
     DatosProfesor[] usuarios = new DatosProfesor[100];
     int receptorId = -1;
+    boolean abierto = true;
     public frmMensajes(ParentUser parentUser) {
         initComponents();
         this.parentUser=parentUser;
@@ -39,8 +39,8 @@ public class frmMensajes extends javax.swing.JFrame {
         new Thread()
         {
             public void run() { //cambiar despues si hay tiempo por cola rabbit o no se
-                while(true){
-                    System.out.println("refrescando mensajes");
+                while(abierto){
+                    //System.out.println("refrescando mensajes");
                     obtenerMensajes();
 
                     try {
@@ -56,11 +56,11 @@ public class frmMensajes extends javax.swing.JFrame {
     public void cargarUsuarios(){
         DefaultListModel dlm = new DefaultListModel();
         
-        Curso[] cursos = new RESTConexion.CalificacionesResource_JerseyClient().getCursos(Curso[].class, parentUser.getToken());
+        Curso[] cursos = RESTConexion.Instance().getCursos(Curso[].class, parentUser.getToken());
         int contador = 0;
         for (Curso curso : cursos) {
             try{
-                DatosProfesor prof = new RESTConexion.UsuarioResource_JerseyClient().obtenerProfesor(DatosProfesor.class, curso.getId(), parentUser.getToken());
+                DatosProfesor prof = RESTConexion.Instance().obtenerProfesor(DatosProfesor.class, ""+curso.getId(), parentUser.getToken());
                 if(prof!=null){
                     usuarios[contador] = prof;
                     dlm.addElement(prof.getFullname() + " - " + curso.getNombre());
@@ -77,22 +77,24 @@ public class frmMensajes extends javax.swing.JFrame {
     public void obtenerMensajes(){
         if(receptorId >= 0){
             //obtener lista de mensajes
-            RESTConexion.MensajeriaResource_JerseyClient con = new RESTConexion.MensajeriaResource_JerseyClient();
-            Mensaje[] mensajes = con.getMensajesRelevantes(Mensaje[].class, parentUser.getToken());
-            txtMensa8.setText("");
-            for (Mensaje mensaje : mensajes) {
-                if(mensaje.getReceptorId() != receptorId) {
-                    txtMensa8.setText(txtMensa8.getText() + "[PROFESOR:] " + mensaje.getContenido() + "\n");
+            try{
+                RESTConexion.GatewayResource_JerseyClient con = RESTConexion.Instance();
+                Mensaje[] mensajes = con.getMensajesRelevantes(Mensaje[].class, ""+receptorId, parentUser.getToken());
+                txtMensa8.setText("");
+                for (Mensaje mensaje : mensajes) {
+                    if(mensaje.getReceptorId() != receptorId) {
+                        txtMensa8.setText(txtMensa8.getText() + "[PROFESOR:] " + mensaje.getContenido() + "\n");
+                    }
+                    else{
+                        txtMensa8.setText(txtMensa8.getText() + "[USTED:] " + mensaje.getContenido() + "\n");
+                    }
                 }
-                else{
-                    txtMensa8.setText(txtMensa8.getText() + "[USTED:] " + mensaje.getContenido() + "\n");
-                }
-            }
+            }catch(Exception e){}
         }
     }
     
     public void enviarMensaje(String txt){
-        RESTConexion.MensajeriaResource_JerseyClient con = new RESTConexion.MensajeriaResource_JerseyClient();
+        RESTConexion.GatewayResource_JerseyClient con = RESTConexion.Instance();
         System.out.println("enviando mensaje " + txt + " | " + receptorId + " | ");
         String mensajeEnviado = con.enviarMensaje(String.class, txt, ""+receptorId, parentUser.getToken());
         if(!mensajeEnviado.isEmpty()){
@@ -304,6 +306,7 @@ public class frmMensajes extends javax.swing.JFrame {
         FrmPrincipal login = new FrmPrincipal(parentUser);
         login.setVisible(true);
         this.setVisible(false);
+        abierto = false;
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

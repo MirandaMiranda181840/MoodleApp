@@ -16,28 +16,40 @@ import javax.ws.rs.core.Response;
  * @author crisb
  */
 public class RESTConexion {
-
-    public static class UsuarioResource_JerseyClient {
+    static GatewayResource_JerseyClient ins;
+    
+    private RESTConexion(){}
+    
+    public static GatewayResource_JerseyClient Instance(){
+        if(ins==null)
+            ins = new GatewayResource_JerseyClient();
+        
+        return ins;
+    }
+    
+    public static class GatewayResource_JerseyClient {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ServicioUsuarios/webresources";
+        private static final String BASE_URI = "https://localhost:8443/GatewayPadres/webresources";
 
-        public UsuarioResource_JerseyClient() {
+        public GatewayResource_JerseyClient() {
+            System.setProperty("javax.net.ssl.trustStore", "C:\\certs\\moodle\\keystore.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "moodle");
             client = javax.ws.rs.client.ClientBuilder.newClient();
-            webTarget = client.target(BASE_URI).path("usuario");
+            webTarget = client.target(BASE_URI).path("gateway");
         }
 
-        public <T> T obtenerHijo(Class<T> responseType, String token) throws ClientErrorException {
+        public <T> T getCursos(Class<T> responseType, String token) throws ClientErrorException {
             WebTarget resource = webTarget;
             if (token != null) {
                 resource = resource.queryParam("token", token);
             }
-            resource = resource.path("obtenerhijo");
+            resource = resource.path("cursos");
             return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
 
-        public <T> T registrarPadre(Class<T> responseType, String password, String apellido, String nombre, String email) throws ClientErrorException {
+        public <T> T registrarUsuario(Class<T> responseType, String password, String apellido, String nombre, String email) throws ClientErrorException {
             WebTarget resource = webTarget;
             if (password != null) {
                 resource = resource.queryParam("password", password);
@@ -55,77 +67,11 @@ public class RESTConexion {
             return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
         }
 
-        public <T> T obtenerNombreUsuario(Class<T> responseType, String email, String token) throws ClientErrorException {
+        public <T> T getAsignaciones(Class<T> responseType, String cursoId, String token) throws ClientErrorException {
             WebTarget resource = webTarget;
-            if (email != null) {
-                resource = resource.queryParam("email", email);
+            if (cursoId != null) {
+                resource = resource.queryParam("cursoId", cursoId);
             }
-            if (token != null) {
-                resource = resource.queryParam("token", token);
-            }
-            resource = resource.path("info");
-            return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
-        }
-
-        public <T> T loguearPadre(Class<T> responseType, String password, String email) throws ClientErrorException {
-            WebTarget resource = webTarget;
-            if (password != null) {
-                resource = resource.queryParam("password", password);
-            }
-            if (email != null) {
-                resource = resource.queryParam("email", email);
-            }
-            resource = resource.path("login");
-            return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
-        }
-        
-        public <T> T obtenerProfesor(Class<T> responseType, int cursoId, String token) throws ClientErrorException {
-            WebTarget resource = webTarget;
-            resource = resource.queryParam("cursoId", cursoId);
-            if (token != null) {
-                resource = resource.queryParam("token", token);
-            }
-            resource = resource.path("obtenerprofesor");
-            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-        }
-        
-        public <T> T obtenerPadres(Class<T> responseType, String token) throws ClientErrorException {
-            WebTarget resource = webTarget;
-            if (token != null) {
-                resource = resource.queryParam("token", token);
-            }
-            resource = resource.path("obtenerpadres");
-            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-        }
-
-        public void close() {
-            client.close();
-        }
-    }
-
-    public static class CalificacionesResource_JerseyClient {
-
-        private WebTarget webTarget;
-        private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ServicioCalificaciones/webresources";
-
-        public CalificacionesResource_JerseyClient() {
-            client = javax.ws.rs.client.ClientBuilder.newClient();
-            webTarget = client.target(BASE_URI).path("calificaciones");
-        }
-
-        public <T> T getCursos(Class<T> responseType, String token) throws ClientErrorException {
-            WebTarget resource = webTarget;
-            if (token != null) {
-                resource = resource.queryParam("token", token);
-            }
-            resource = resource.path("cursos");
-            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-        }
-
-        public <T> T getAsignaciones(Class<T> responseType, int cursoId, String token) throws ClientErrorException {
-            WebTarget resource = webTarget;
-            resource = resource.queryParam("cursoId", cursoId);
             if (token != null) {
                 resource = resource.queryParam("token", token);
             }
@@ -133,31 +79,13 @@ public class RESTConexion {
             return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
 
-        public <T> T getCalificaciones(Class<T> responseType, int asignacionId, int cursoId, String token) throws ClientErrorException {
+        public <T> T obtenerIdUsuario(Class<T> responseType, String token) throws ClientErrorException {
             WebTarget resource = webTarget;
-            resource = resource.queryParam("asignacionId", asignacionId);
-            resource = resource.queryParam("cursoId", cursoId);
             if (token != null) {
                 resource = resource.queryParam("token", token);
             }
-            resource = resource.path("detallesAsignacion");
-            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-        }
-
-        public void close() {
-            client.close();
-        }
-    }
-
-    public static class AlarmaResource_JerseyClient {
-
-        private WebTarget webTarget;
-        private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ServicioAlarma/webresources";
-
-        public AlarmaResource_JerseyClient() {
-            client = javax.ws.rs.client.ClientBuilder.newClient();
-            webTarget = client.target(BASE_URI).path("alarma");
+            resource = resource.path("userid");
+            return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
         }
 
         public <T> T getAlarmas(Class<T> responseType, String token) throws ClientErrorException {
@@ -169,20 +97,64 @@ public class RESTConexion {
             return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
 
-        public void close() {
-            client.close();
+        public <T> T getMensajesRelevantes(Class<T> responseType, String receptorId, String token) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (receptorId != null) {
+                resource = resource.queryParam("receptorId", receptorId);
+            }
+            if (token != null) {
+                resource = resource.queryParam("token", token);
+            }
+            resource = resource.path("getmessages");
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
-    }
 
-    public static class MensajeriaResource_JerseyClient {
+        public <T> T loguearUsuario(Class<T> responseType, String password, String email) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (password != null) {
+                resource = resource.queryParam("password", password);
+            }
+            if (email != null) {
+                resource = resource.queryParam("email", email);
+            }
+            resource = resource.path("login");
+            return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
+        }
 
-        private WebTarget webTarget;
-        private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ServicioMensajeria/webresources";
+        public <T> T obtenerHijo(Class<T> responseType, String token) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (token != null) {
+                resource = resource.queryParam("token", token);
+            }
+            resource = resource.path("hijo");
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
 
-        public MensajeriaResource_JerseyClient() {
-            client = javax.ws.rs.client.ClientBuilder.newClient();
-            webTarget = client.target(BASE_URI).path("mensajeria");
+        public <T> T getCalificacionesProfesor(Class<T> responseType, String cursoId, String asignacionId, String token) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (cursoId != null) {
+                resource = resource.queryParam("cursoId", cursoId);
+            }
+            if (asignacionId != null) {
+                resource = resource.queryParam("asignacionId", asignacionId);
+            }
+            if (token != null) {
+                resource = resource.queryParam("token", token);
+            }
+            resource = resource.path("detallesAsignacionProfesor");
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
+
+        public <T> T obtenerProfesor(Class<T> responseType, String cursoId, String token) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (cursoId != null) {
+                resource = resource.queryParam("cursoId", cursoId);
+            }
+            if (token != null) {
+                resource = resource.queryParam("token", token);
+            }
+            resource = resource.path("profesorcurso");
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
 
         public <T> T enviarMensaje(Class<T> responseType, String contenido, String recipienteId, String token) throws ClientErrorException {
@@ -196,16 +168,44 @@ public class RESTConexion {
             if (token != null) {
                 resource = resource.queryParam("token", token);
             }
-            resource = resource.path("enviarmensaje");
+            resource = resource.path("sendmessage");
             return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
         }
 
-        public <T> T getMensajesRelevantes(Class<T> responseType, String token) throws ClientErrorException {
+        public <T> T getCalificaciones(Class<T> responseType, String cursoId, String asignacionId, String token) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (cursoId != null) {
+                resource = resource.queryParam("cursoId", cursoId);
+            }
+            if (asignacionId != null) {
+                resource = resource.queryParam("asignacionId", asignacionId);
+            }
+            if (token != null) {
+                resource = resource.queryParam("token", token);
+            }
+            resource = resource.path("detallesAsignacion");
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        }
+
+        public <T> T obtenerNombreUsuario(Class<T> responseType, String email, String token) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            if (email != null) {
+                resource = resource.queryParam("email", email);
+            }
+            if (token != null) {
+                resource = resource.queryParam("token", token);
+            }
+            resource = resource.path("user_fullname");
+            return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(responseType);
+        }
+
+        public <T> T obtenerPadres(Class<T> responseType, String token) throws ClientErrorException {
             WebTarget resource = webTarget;
             if (token != null) {
                 resource = resource.queryParam("token", token);
             }
-            resource = resource.path("obtenermensajes");
+            resource = resource.path("listpadres");
+            System.out.println(resource.getUri().toString());
             return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
         }
 
@@ -213,6 +213,5 @@ public class RESTConexion {
             client.close();
         }
     }
-
 
 }

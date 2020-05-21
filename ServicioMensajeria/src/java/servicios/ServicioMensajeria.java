@@ -6,6 +6,9 @@
 package servicios;
 
 import conexioncontrolescolar.ConexionControlEscolar;
+import encriptado.AES;
+import java.util.ArrayList;
+import objectosNegocio.Mensaje;
 import objectosNegocio.Respuesta;
 
 /**
@@ -20,21 +23,28 @@ public class ServicioMensajeria {
     public static ServicioMensajeria Instance() {
         if (s == null) {
             s = new ServicioMensajeria();
+            ConexionControlEscolar.Instance(); //establecer conexion
         }
         
         return s;
     }
     
-    public Respuesta getMensajesRelevantes(int userId) {
+    public Respuesta getMensajesRelevantes(int userId, int receptorId) {
         ConexionControlEscolar conn = ConexionControlEscolar.Instance();
         
-        return new Respuesta(conn.obtenerMensajesRelevantes(userId), "");
+        System.out.println(userId + ", " + receptorId);
+        ArrayList<Mensaje> mensajes = conn.obtenerMensajesRelevantes(userId, receptorId);
+        for (Mensaje mensaje : mensajes) {
+            mensaje.setContenido(AES.decrypt(mensaje.getContenido(), "SECRETO"));
+        }
+        
+        return new Respuesta(mensajes, "");
     }
     
     
     public void enviarMensaje(int remitenteId, int recipienteId, String mensaje) {
         ConexionControlEscolar conn = ConexionControlEscolar.Instance();
         System.out.println(remitenteId + ", " + recipienteId + ", " + mensaje);
-        conn.enviarMensaje(remitenteId, recipienteId, mensaje);
+        conn.enviarMensaje(remitenteId, recipienteId, AES.encrypt(mensaje, "SECRETO"));
     }
 }

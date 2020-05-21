@@ -28,7 +28,6 @@ public class frmIniciarSesion extends javax.swing.JFrame {
     ParentUser parentUser;
     public frmIniciarSesion() {
         initComponents();
-     
         setLocationRelativeTo(null);
     }
 

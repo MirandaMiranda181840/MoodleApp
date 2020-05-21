@@ -24,13 +24,13 @@ public class frmCursos extends javax.swing.JFrame {
      */
     ParentUser parentUser;
   
-     RESTConexion.CalificacionesResource_JerseyClient conexion;
+    RESTConexion.GatewayResource_JerseyClient conexion;
      ArrayList<Curso> cursosAlumno;
     public frmCursos(ParentUser parentUser) {
         initComponents();
         this.parentUser=parentUser;
         this.cursosAlumno=new ArrayList <Curso>();
-        conexion=new RESTConexion.CalificacionesResource_JerseyClient();
+        conexion=RESTConexion.Instance();
         llenarCursos();
         setLocationRelativeTo(null);
     }

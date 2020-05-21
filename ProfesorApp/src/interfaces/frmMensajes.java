@@ -27,17 +27,18 @@ public class frmMensajes extends javax.swing.JFrame {
     ParentUser parentUser;
     DatosPadre[] usuarios;
     int receptorId = -1;
+    boolean abierto = false;
     public frmMensajes(ParentUser parentUser) {
         initComponents();
         this.parentUser=parentUser;
         setLocationRelativeTo(null);
         cargarUsuarios();
-        
+        abierto = true;
         new Thread()
         {
             public void run() { //cambiar despues si hay tiempo por cola rabbit o no se
-                while(true){
-                    System.out.println("refrescando mensajes");
+                while(abierto){
+                    //System.out.println("refrescando mensajes");
                     obtenerMensajes();
 
                     try {
@@ -64,17 +65,19 @@ public class frmMensajes extends javax.swing.JFrame {
     public void obtenerMensajes(){
          if(receptorId >= 0){
             //obtener lista de mensajes
-            RESTConexion.MensajeriaResource_JerseyClient con = new RESTConexion.MensajeriaResource_JerseyClient();
-            Mensaje[] mensajes = con.getMensajesRelevantes(Mensaje[].class, parentUser.getToken());
-            txtMensa8.setText("");
-            for (Mensaje mensaje : mensajes) {
-                if(mensaje.getReceptorId() != receptorId) {
-                    txtMensa8.setText(txtMensa8.getText() + "[PADRE:] " + mensaje.getContenido() + "\n");
+            try{
+                RESTConexion.MensajeriaResource_JerseyClient con = new RESTConexion.MensajeriaResource_JerseyClient();
+                Mensaje[] mensajes = con.getMensajesRelevantes(Mensaje[].class, ""+receptorId, parentUser.getToken());
+                txtMensa8.setText("");
+                for (Mensaje mensaje : mensajes) {
+                    if(mensaje.getReceptorId() != receptorId) {
+                        txtMensa8.setText(txtMensa8.getText() + "[PADRE:] " + mensaje.getContenido() + "\n");
+                    }
+                    else {
+                        txtMensa8.setText(txtMensa8.getText() + "[USTED:] " + mensaje.getContenido() + "\n");
+                    }
                 }
-                else{
-                    txtMensa8.setText(txtMensa8.getText() + "[USTED:] " + mensaje.getContenido() + "\n");
-                }
-            }
+            }catch(Exception e){}
         }
     }
     
@@ -291,6 +294,7 @@ public class frmMensajes extends javax.swing.JFrame {
         FrmPrincipal login = new FrmPrincipal(parentUser);
         login.setVisible(true);
         this.setVisible(false);
+        abierto = false;
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

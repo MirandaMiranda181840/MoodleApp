@@ -257,7 +257,7 @@ public class frmRegistrarse extends javax.swing.JFrame {
                     formData.param("email", txtEmail.getText());*/
                     
                     try{
-                        String token = new RESTConexion.UsuarioResource_JerseyClient().registrarPadre(
+                        String token = RESTConexion.Instance().registrarUsuario(
                                 String.class, 
                                 txtContrasena.getText(),
                                 txtApellido.getText(),

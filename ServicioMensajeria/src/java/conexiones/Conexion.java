@@ -19,9 +19,11 @@ public class Conexion {
 
         private WebTarget webTarget;
         private Client client;
-        private static final String BASE_URI = "http://localhost:64550/ServicioUsuarios/webresources";
+        private static final String BASE_URI = "https://localhost:8443/ServicioUsuarios/webresources";
 
         public UsuarioResource_JerseyClient() {
+            System.setProperty("javax.net.ssl.trustStore", "C:\\certs\\moodle\\keystore.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "moodle");
             client = javax.ws.rs.client.ClientBuilder.newClient();
             webTarget = client.target(BASE_URI).path("usuario");
         }

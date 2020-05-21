@@ -24,7 +24,8 @@ public class frmAsignacion extends javax.swing.JFrame {
      * Creates new form frmAsignacion
      */
     ParentUser parentUser;
-    RESTConexion.CalificacionesResource_JerseyClient conexion;
+    
+    RESTConexion.GatewayResource_JerseyClient conexion;
    
      private int idAsignacion;
      private int idCurso;
@@ -35,7 +36,7 @@ public class frmAsignacion extends javax.swing.JFrame {
         this.idCurso=idCurso;
         this.asig = asig;
         this.parentUser=parentUser;
-        conexion=new RESTConexion.CalificacionesResource_JerseyClient();
+        conexion=RESTConexion.Instance();
        llenarAsignacion();
         
     
@@ -45,7 +46,7 @@ public class frmAsignacion extends javax.swing.JFrame {
     private void llenarAsignacion(){
         //este es un formato que se necesita crear para usar el rest service
         
-        DatosAsignacion detalle= conexion.getCalificaciones(DatosAsignacion.class, this.idAsignacion, this.asig.getIdcurso(), parentUser.getToken());
+        DatosAsignacion detalle= conexion.getCalificaciones(DatosAsignacion.class, ""+this.asig.getIdcurso(), ""+this.idAsignacion, parentUser.getToken());
         if(detalle!=null){
             System.out.println("fecha calificada: " + detalle.getFechacalificada());
             String descripFormato = asig.getIntroduccion().replaceAll("<p>", "");

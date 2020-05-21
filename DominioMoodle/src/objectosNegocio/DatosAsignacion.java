@@ -13,16 +13,17 @@ public class DatosAsignacion {
     //DatosAsignacion asig = new DatosAsignacion(obj.getInt("id"), obj.getString("attemptnumber"), obj.getInt("timecreated"), obj.getInt("timemodified"), obj.getInt("grader"), obj.getInt("grade"));
     int id;
     int attemptnumber;
-    int timecreated;
-    int timemodified;
+    long timecreated;
+    long timemodified;
     int grader;
     float grade;
-    int fechacalificada;
+    long fechacalificada;
+    long fechaentrega;
 
     public DatosAsignacion() {
     }
 
-    public DatosAsignacion(int id, int attemptnumber, int timecreated, int timemodified, int grader, float grade, int fechacalificada) {
+    public DatosAsignacion(int id, int attemptnumber, long timecreated, long timemodified, int grader, float grade, long fechacalificada, long fechaentrega) {
         this.id = id;
         this.attemptnumber = attemptnumber;
         this.timecreated = timecreated;
@@ -30,14 +31,22 @@ public class DatosAsignacion {
         this.grader = grader;
         this.grade = grade;
         this.fechacalificada = fechacalificada;
+        this.fechaentrega = fechaentrega;
     }
 
+    public long getFechaentrega() {
+        return fechaentrega;
+    }
 
-    public int getFechacalificada() {
+    public void setFechaentrega(long fechaentrega) {
+        this.fechaentrega = fechaentrega;
+    }
+
+    public long getFechacalificada() {
         return fechacalificada;
     }
 
-    public void setFechacalificada(int fechacalificada) {
+    public void setFechacalificada(long fechacalificada) {
         this.fechacalificada = fechacalificada;
     }
 
@@ -57,19 +66,19 @@ public class DatosAsignacion {
         this.attemptnumber = attemptnumber;
     }
 
-    public int getTimecreated() {
+    public long getTimecreated() {
         return timecreated;
     }
 
-    public void setTimecreated(int timecreated) {
+    public void setTimecreated(long timecreated) {
         this.timecreated = timecreated;
     }
 
-    public int getTimemodified() {
+    public long getTimemodified() {
         return timemodified;
     }
 
-    public void setTimemodified(int timemodified) {
+    public void setTimemodified(long timemodified) {
         this.timemodified = timemodified;
     }
 

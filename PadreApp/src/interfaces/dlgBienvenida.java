@@ -47,7 +47,7 @@ public final class dlgBienvenida extends javax.swing.JDialog {
         parentUser.setChildLastName(alumno.getApellido());
         */
         try{
-            DatosHijo hijo = new RESTConexion.UsuarioResource_JerseyClient().obtenerHijo(DatosHijo.class, parentUser.getToken());
+            DatosHijo hijo = RESTConexion.Instance().obtenerHijo(DatosHijo.class, parentUser.getToken());
             System.out.println(hijo.toString());
             lblNombreHijo.setText(hijo.getFullname());
         }

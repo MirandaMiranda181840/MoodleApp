@@ -6,13 +6,14 @@
 package servicios;
 
 import conexionapimoodle.ConexionMoodle;
+import conexiones.Conexion;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objectosNegocio.Alumno;
 import objectosNegocio.Asignacion;
-import objectosNegocio.Calificacion;
 import objectosNegocio.Curso;
 import objectosNegocio.DatosAsignacion;
 import objectosNegocio.Respuesta;
@@ -36,100 +37,7 @@ public class ServicioCalificaciones {
         
         return s;
     }
-    /*
-    //&moodlewsrestformat=json
-    //mod_assign_get_grades
-    public Respuesta getCursosAlumno(int alumnoId){
-        //http://localhost/moodle/webservice/rest/server.php?wstoken=6a184382969c536d063d0f909581ec36&wsfunction=core_enrol_get_users_courses&userid=55
-        MoodleConexion conn= MoodleConexion.Instance();
-        return new Respuesta(conn.obtenerListaCursosAlumno(alumnoId),"");
-    }
-    
-    public Respuesta getAsignacionesCurso(int cursoID){
-           MoodleConexion conn= MoodleConexion.Instance();
-        return new Respuesta(conn.obtenerListaAsignacionesCurso(cursoID),"");
-    }
-    
-    public Respuesta getDetalleAsignacion(String infoId){
-        MoodleConexion conn= MoodleConexion.Instance();
-        return new Respuesta(conn.obtenerDetalleAsignacion(infoId),"");
-    }
-    */
-    
-    public Respuesta getCursos(int hijoId) {
-        try {
-            ConexionMoodle con = new ConexionMoodle(0);
-            
-            String respuesta;
-            
-            respuesta = con.Llamar("core_enrol_get_users_courses", "userid="+hijoId);
-            System.out.println("hijoId"+hijoId);
-            System.out.println("getCursos json: " + respuesta);
-            ArrayList<Curso> cursos = new ArrayList<>();
-            
-            JSONArray arr = new JSONArray(respuesta);
-            
-            for (int i = 0; i < arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i);
-                cursos.add(
-                        new Curso(obj.getInt("id"), obj.getString("fullname"), obj.getString("summary"))
-                );
-            }
-            System.out.println("getCursos res: " + cursos.toString());
 
-            Curso[] _arr = new Curso[cursos.size()]; 
-            _arr = cursos.toArray(_arr); 
-            
-            return new Respuesta(_arr, "");
-        } catch (Exception ex) {
-            Logger.getLogger(ServicioCalificaciones.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return new Respuesta(null, "Error al obtener cursos.");
-    }
-    
-    public Respuesta getAsignaciones(int cursoId) {
-        try {
-            ConexionMoodle con = new ConexionMoodle(0);
-            
-            String respuesta;
-            
-            ArrayList<Asignacion> asignaciones = new ArrayList<>();
-            
-            respuesta = con.Llamar("mod_assign_get_assignments", "");
-            System.out.println("getAsignaciones json: " + respuesta);
-            JSONObject jsonObj = new JSONObject(respuesta);
-            JSONArray arr = jsonObj.getJSONArray("courses");
-            for (int i = 0; i < arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i);
-                if(obj.getInt("id") == cursoId){
-                    JSONArray asigs = obj.getJSONArray("assignments");
-                    for (int j = 0; j < asigs.length(); j++) {
-                        JSONObject obj2 = asigs.getJSONObject(j);
-                        Asignacion asig = new Asignacion();
-                        asig.setId(obj2.getInt("id"));
-                        asig.setIdcurso(cursoId);
-                        asig.setIntroduccion(obj2.getString("intro"));
-                        asig.setNombre(obj2.getString("name"));
-                        asig.setNumSubidas(obj2.getInt("nosubmissions"));
-                        asig.setFechaEntrega(obj2.getInt("duedate"));
-                        
-                        asignaciones.add(asig);
-                    }
-                }
-            }
-            System.out.println("getAsignaciones obj: "+ asignaciones.toString());
-            
-            Asignacion[] _arr = new Asignacion[asignaciones.size()]; 
-            _arr = asignaciones.toArray(_arr); 
-            
-            return new Respuesta(_arr, "");
-        } catch (Exception ex) {
-            Logger.getLogger(ServicioCalificaciones.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return new Respuesta(null, "Error al obtener asignaciones.");
-    }
-    
     public Respuesta getCalificacionAsignacion(int hijoId, int cursoId, int asignacionId) {
         try {
             ConexionMoodle con = new ConexionMoodle(0);
@@ -149,16 +57,17 @@ public class ServicioCalificaciones {
                             System.out.println(obj2.getDouble("grade"));
                             double grade = obj2.getDouble("grade");
                             float fgrade = (float) grade;
-                            int fechaCal = (int) this.getFechaCalificada(hijoId, cursoId, asignacionId).getRespuesta();
+                            long fechaCal = (long) this.getFechaCalificada(hijoId, cursoId, asignacionId).getRespuesta();
                             System.out.println(fechaCal);
                             DatosAsignacion asig = new DatosAsignacion(
                                     obj.getInt("assignmentid"), 
                                     obj2.getInt("attemptnumber"), 
-                                    obj2.getInt("timecreated"), 
-                                    obj2.getInt("timemodified"), 
+                                    obj2.getLong("timecreated"), 
+                                    obj2.getLong("timemodified"), 
                                     obj2.getInt("grader"), 
                                     fgrade,
-                                    fechaCal
+                                    fechaCal,
+                                    0
                             );
                             return new Respuesta(asig, "");
                         }
@@ -174,9 +83,113 @@ public class ServicioCalificaciones {
             noEntregada.setGrade(-1.0f);
             noEntregada.setGrader(0);
             noEntregada.setTimecreated(subida.contains("\"status\":\"submitted\"") ? 1 : 0);
-            noEntregada.setTimemodified(hijoId);
+            noEntregada.setTimemodified(0);
             
             return new Respuesta(noEntregada, "");
+        } catch (Exception ex) {
+            Logger.getLogger(ServicioCalificaciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return new Respuesta(null, "Error al obtener calificaciones.");
+    }
+    
+    public Respuesta getCalificacionAsignacionProfesor(int profesorId, int cursoId, int asignacionId, String token) {
+        try {
+            ConexionMoodle con = new ConexionMoodle(0);
+            
+            String respuesta = con.Llamar("mod_assign_get_grades", "assignmentids[0]=" + asignacionId);
+            System.out.println("getCalificacionAsignacion json: " + respuesta);
+            
+            Conexion.TareasResource_JerseyClient con2 = new Conexion.TareasResource_JerseyClient();
+            Asignacion[] asigs = con2.getAsignaciones(Asignacion[].class, ""+cursoId, token);
+            
+            ArrayList<DatosAsignacion> list = new ArrayList<>();
+            HashMap<String, Boolean> revisadas = new HashMap<>();
+      
+            JSONObject jsonObj = new JSONObject(respuesta);
+            JSONArray arr = jsonObj.getJSONArray("assignments");
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                if(obj.getInt("assignmentid") == asignacionId){
+                    JSONArray arr2 = obj.getJSONArray("grades");
+                    for (int j = 0; j < arr2.length(); j++) {
+                        JSONObject obj2 = arr2.getJSONObject(j);
+                        if(obj2.getInt("grader") == profesorId){
+                            System.out.println(obj2.getDouble("grade"));
+                            double grade = obj2.getDouble("grade");
+                            float fgrade = (float) grade;
+                            long fechaCal = (long) this.getFechaCalificada(cursoId, asignacionId).getRespuesta();
+                            System.out.println(fechaCal);
+                            
+                            long fechaEntrega = 0;
+                            for (Asignacion asig : asigs) {
+                                if(asig.getId() == obj.getInt("assignmentid")){
+                                    fechaEntrega = asig.getFechaEntrega();
+                                    break;
+                                }
+                            }
+                            System.out.println("Fecha entrega: " + fechaEntrega);
+                            DatosAsignacion asig = new DatosAsignacion(
+                                    obj.getInt("assignmentid"), 
+                                    obj2.getInt("attemptnumber"), 
+                                    obj2.getLong("timecreated"), 
+                                    obj2.getLong("timemodified"), 
+                                    obj2.getInt("grader"), 
+                                    fgrade,
+                                    fechaCal,
+                                    fechaEntrega
+                            );
+                            list.add(asig);
+                            revisadas.put(""+obj2.getInt("userid"), true);
+                        }
+                    }
+                }
+            }
+             
+            String respuesta2 = con.Llamar("mod_assign_get_submissions", "assignmentids[0]=" + asignacionId);
+            System.out.println("RESPUESTA SUBMISSIONS: " + respuesta2);
+            JSONObject jsonObj2 = new JSONObject(respuesta2);
+            JSONArray arr2 = jsonObj2.getJSONArray("assignments");
+            for (int i = 0; i < arr2.length(); i++) {
+                JSONObject obj = arr2.getJSONObject(i);
+                if(obj.getInt("assignmentid") == asignacionId){
+                    JSONArray arr3 = obj.getJSONArray("submissions");
+                    for (int j = 0; j < arr3.length(); j++) {
+                        JSONObject obj2 = arr3.getJSONObject(j);
+                        if(obj2.toString().contains("\"status\":\"submitted\"")){
+                            boolean revisada = revisadas.get(""+obj2.getInt("userid")) != null;
+                            if(!revisada){
+                                int fechaEntrega = 0;
+                                for (Asignacion asig : asigs) {
+                                    if(asig.getId() == asignacionId){
+                                        fechaEntrega = asig.getFechaEntrega();
+                                        break;
+                                    }
+                                }
+                                
+                                long fechaCal = (long) this.getFechaCalificada(cursoId, asignacionId).getRespuesta();
+                                DatosAsignacion asig = new DatosAsignacion(
+                                    obj.getInt("assignmentid"), 
+                                    obj2.getInt("attemptnumber"), 
+                                    obj2.getLong("timecreated"), 
+                                    obj2.getLong("timemodified"), 
+                                    profesorId, 
+                                    -1.0f,
+                                    fechaCal,
+                                    fechaEntrega
+                                );
+                                
+                                list.add(asig); //NO ENTREGADA
+                            }
+                        }
+                    }
+                }
+            }
+             
+            DatosAsignacion[] _arr = new DatosAsignacion[list.size()]; 
+            _arr = list.toArray(_arr); 
+            
+            return new Respuesta(_arr, "");
         } catch (Exception ex) {
             Logger.getLogger(ServicioCalificaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -203,11 +216,55 @@ public class ServicioCalificaciones {
                         JSONObject obj2 = arr2.getJSONObject(j);
                         //System.out.println(obj2.getInt("id") + "," + asignacionId);
                         if(obj2.getString("itemmodule").equals("assign") && obj2.getInt("iteminstance") == asignacionId){
-                            System.out.println("Fecha revision: " + obj2.getInt("gradedategraded"));
-                            return new Respuesta(obj2.getInt("gradedategraded"), "");
+                            long fechaRevision = 0;
+                            try{
+                                fechaRevision = obj2.getInt("gradedategraded");
+                                fechaRevision = obj2.getLong("gradedategraded");
+                            }catch(Exception e){}
+                            System.out.println("Fecha revision: " + fechaRevision);
+                            return new Respuesta(fechaRevision, "");
                         }
                     }
                 }
+            }
+            
+            return new Respuesta(0, "");
+        } catch (Exception ex) {
+            Logger.getLogger(ServicioCalificaciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return new Respuesta(null, "Error al obtener fecha.");
+    }
+    
+    public Respuesta getFechaCalificada(int cursoId, int asignacionId) { //gradereport_user_get_grade_items
+        try {
+            ConexionMoodle con = new ConexionMoodle(0);
+            
+            String respuesta = con.Llamar("gradereport_user_get_grade_items", "courseid="+cursoId);
+            System.out.println("getCalificacionAsignacion json: " + respuesta);
+            
+            JSONObject jsonObj = new JSONObject(respuesta);
+            JSONArray arr = jsonObj.getJSONArray("usergrades");
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                //System.out.println(obj.getInt("userid") + "," + hijoId);
+                //if(obj.getInt("userid") == hijoId){
+                    JSONArray arr2 = obj.getJSONArray("gradeitems");
+                    //System.out.println(arr2);
+                    for (int j = 0; j < arr2.length(); j++) {
+                        JSONObject obj2 = arr2.getJSONObject(j);
+                        //System.out.println(obj2.getInt("id") + "," + asignacionId);
+                        if(obj2.getString("itemmodule").equals("assign") && obj2.getInt("iteminstance") == asignacionId){
+                            long fechaRevision = 0;
+                            try{
+                                fechaRevision = obj2.getInt("gradedategraded");
+                                fechaRevision = obj2.getLong("gradedategraded");
+                            }catch(Exception e){}
+                            System.out.println("Fecha revision: " + fechaRevision);
+                            return new Respuesta(fechaRevision, "");
+                        }
+                    }
+                //}
             }
             
             return new Respuesta(0, "");
